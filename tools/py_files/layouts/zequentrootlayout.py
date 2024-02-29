@@ -1,8 +1,8 @@
-from kivy.uix.boxlayout import BoxLayout
+from tools.py_files.layouts.casuals.zequentgridlayout import *
 from kivymd.app import MDApp
 from tools.Utils import *
 
-class ZequentRootLayout(BoxLayout):
+class ZequentRootLayout(ZequentGridLayout):
     app= MDApp.get_running_app()
 
     def __init__(self, **kwargs):

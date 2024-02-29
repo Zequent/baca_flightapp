@@ -1,28 +1,32 @@
 <ZequentConnectionLayout>:
-    orientation: "vertical"
     size_hint: 1, 1
-    ZequentButton:
-        id: rfc_button
-        text: 'RFC'
-        disabled: not lte_button.disabled 
-        on_press: self.disabled = True
-        font_size: "40dp"
-    MDBoxLayout: 
+    ZequentGridLayout:
+        cols:2 
         id: connection_type
-        ZequentButton:
-            id: lte_button
-            text: 'LTE'
-            disabled: not rfc_button.disabled
-            on_press: self.disabled = True
-            font_size: "40dp"
-        ZequentSingleTextInput:
-            id: lte_address
-            disabled: not rfc_button.disabled
-            font_size: "40dp"
-    MDBoxLayout:
+        ZequentAnchorLayout:
+            ZequentButton:
+                id: rfc_button
+                text: 'RFC'
+                disabled: not lte_button.disabled 
+                on_press: self.disabled = True
         ZequentLabel:
-            id: connection_status_label
-            text: root.connectionStatusText
-        ZequentButton:
-            text: 'Connect'
-            on_press: root.tryConnection(self, connection_type, connection_status_label)
+        ZequentAnchorLayout:
+            ZequentButton:
+                id: lte_button
+                text: 'LTE'
+                disabled: not rfc_button.disabled
+                on_press: self.disabled = True
+        ZequentAnchorLayout:
+            ZequentSingleTextInput:
+                id: lte_address
+                disabled: not rfc_button.disabled
+                font_size: "40dp"
+    ZequentBoxLayout:
+        ZequentAnchorLayout:
+            ZequentLabel:
+                id: connection_status_label
+                text: root.connectionStatusText
+        ZequentAnchorLayout:
+            ZequentButton:
+                text: 'Connect'
+                on_press: root.tryConnection(self, connection_type, connection_status_label)

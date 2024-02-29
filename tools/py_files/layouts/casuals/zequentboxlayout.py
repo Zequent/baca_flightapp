@@ -1,10 +1,9 @@
-from tools.py_files.layouts.casuals.zequentboxlayout import *
-from tools.Utils import *
+from kivy.uix.boxlayout import BoxLayout
 from kivymd.app import MDApp
 
-class MainControllerLayout(ZequentBoxLayout):
-    
-    
+class ZequentBoxLayout(BoxLayout):
+
+   
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

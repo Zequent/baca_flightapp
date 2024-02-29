@@ -1,10 +1,12 @@
-from kivy.uix.boxlayout import BoxLayout
+from tools.py_files.layouts.casuals.zequentboxlayout import *
+from tools.py_files.layouts.casuals.zequentanchorlayout import *
+from tools.py_files.layouts.casuals.zequentgridlayout import *
 from kivy.clock import Clock
 from functools import partial
 from kivymd.app import MDApp
 from tools.Utils import *
 
-class ZequentConnectionLayout(BoxLayout):
+class ZequentConnectionLayout(ZequentGridLayout):
     
     connectionStatusText = ''
     app= MDApp.get_running_app()

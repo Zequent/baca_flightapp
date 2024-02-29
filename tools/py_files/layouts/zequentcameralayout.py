@@ -1,6 +1,6 @@
-from kivy.uix.boxlayout import BoxLayout
+from tools.py_files.layouts.casuals.zequentboxlayout import *
 
-class ZequentCameraLayout(BoxLayout):
+class ZequentCameraLayout(ZequentBoxLayout):
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

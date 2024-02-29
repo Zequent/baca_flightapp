@@ -1,5 +1,5 @@
 <ZequentButton>:
-    font_size: "40dp"
+    font_size: app.fontSizes["secondary"]
     style: "filled"
     background_normal: ''
     background_color:  (0, 0,0,0)
@@ -10,6 +10,7 @@
             size: self.size
             pos: self.pos
             radius: [40]
+    size_hint: .5,.2
     #on_press: self.background_color = app.customColors["fourth"]
     #on_release: self.background_color = app.customColors["second"]
     #background_down: DEFINE WITH IMAGE

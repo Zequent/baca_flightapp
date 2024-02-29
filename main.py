@@ -79,8 +79,23 @@ class ZequentMavLinkApp(MDApp):
         "tertiary": dp(20)
     }
 
+    spacings = {
+        "none"  : dp(0),
+        "small" : dp(10),
+        "medium": dp(20),
+        "big":dp(30)
+    }
+
+    paddings = {
+        "none"  : (0,0),
+        "small" : (100,50),
+        "medium": (200,100),
+        "big": (400,200)
+    }
+
     appTitle = "Baca"
     navBarTitle = "Baca"
+
 
     connected = BooleanProperty()
 

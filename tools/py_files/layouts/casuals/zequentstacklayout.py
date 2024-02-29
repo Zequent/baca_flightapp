@@ -1,10 +1,9 @@
-from tools.py_files.layouts.casuals.zequentboxlayout import *
-from tools.Utils import *
+from kivy.uix.stacklayout import StackLayout
 from kivymd.app import MDApp
 
-class MainControllerLayout(ZequentBoxLayout):
-    
-    
+class ZequentStackLayout(StackLayout):
+
+   
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
