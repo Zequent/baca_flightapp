@@ -4,8 +4,9 @@
     columns: 3
     ZequentMapView:
         id: mapview
-    MDBoxLayout:
-        orientation: "horizontal"
-        columns: 2
-        Label:
-            text: 'Camera status'
+        size_hint: 1,1
+    ZequentButton:
+        text: 'click me'
+        size_hint: .25,.25
+        pos: 0,0
+        on_press: mapview.updateMap()

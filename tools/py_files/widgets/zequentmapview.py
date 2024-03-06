@@ -14,31 +14,27 @@ class ZequentMapView(MapView):
    
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.zoom=17
-        self.lat = 47.28876860219628
-        self.lon = 11.14698035747897
-
-
+        self.zoom=22
+        self.lat = self.latitude
+        self.lon = self.longitude
 
         apiKey = 'AIzaSyBSwt7u9Pn-Hw09bWsiQ-ZQqlE7aGf5Gxg'
         session = 'AJVsH2xGGYNwrRk_cn8hF5AKWVbN527eF2s3013IJJT9WZWRANmAVTT_ZIz5IFzRQYrkH6oDdo2Zc4E9QJwkl8ih_w'
         source = MapSource(url='https://tile.googleapis.com/v1/2dtiles/{z}/{x}/{y}?key='+apiKey + '&session=' + session,
                             cache_key="google-maps", tile_size=256,
                             image_ext="jpeg", attribution="@GoogleMaps")
-       # self.map_source.from_provider("thunderforest-cycle")
         self.map_source = source
+        self.lat = self.latitude
+        self.lon = self.longitude
         #self.updateMap()
         
     
     def updateMap(self):
-        latitude = 48
-        longitude = 48
-
         if(self.app is not None ):
-            latitude = self.app.latitude
-            longitude = self.app.longitude
+            self.latitude = self.app.latitude
+            self.longitude = self.app.longitude
             
-        self.center_on(latitude, longitude)
+        self.center_on(self.latitude, self.longitude)
 
 
     

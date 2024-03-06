@@ -48,7 +48,8 @@ from tools.py_files.widgets.zequentsingletextinput import *
 def importKV_FILES():
     for currDirName, dirnames, filenames in os.walk('./tools/kv_files'):
         for filename in filenames:
-            Builder.load_file(os.path.join(currDirName, filename)) 
+            if not currDirName.__contains__("screens"):
+                Builder.load_file(os.path.join(currDirName, filename)) 
 
 class ZequentMavLinkApp(MDApp):
 
