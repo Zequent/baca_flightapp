@@ -7,7 +7,7 @@ class ZequentCameraLayout(ZequentFloatLayout):
         super().__init__(**kwargs)
 
 
-    def test(self,button:Button, *args):
+    def changeMainFeed(self,button:Button, *args):
         
         popIndex = 0
         buttonCopy = 0
@@ -25,7 +25,6 @@ class ZequentCameraLayout(ZequentFloatLayout):
 
         self.remove_widget(buttonCopy)
         self.add_widget(buttonCopy)
-        copy.bind(on_press=self.test)
        
         
         
