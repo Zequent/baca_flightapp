@@ -36,6 +36,7 @@ from tools.py_files.screenmanager.zequentrootscreenmanager import *
 from tools.py_files.translator.translator import *
 
 ##WIDGETS
+from tools.py_files.widgets.zequentactionicon import *
 from tools.py_files.widgets.zequentbutton import *
 from tools.py_files.widgets.zequentdialog import *
 from tools.py_files.widgets.zequentdropdownmenu import *
