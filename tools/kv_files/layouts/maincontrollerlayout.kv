@@ -2,7 +2,7 @@
     orientation: "vertical"
     ZequentFloatLayout:
         ZequentCameraLayout:
-        BoxLayout:
+        ZequentBoxLayout:
             pos_hint: {"top":1}
             size_hint: 1,None
             height: app.root.ids.appbar.height
@@ -12,8 +12,10 @@
                 Rectangle:
                     pos: self.pos
                     size: self.size
-            Label: 
+            ZequentButton: 
                 text: "Hallo1"
+                size_hint: 1,1
+                on_press: print("ddasf")
             Label: 
                 text: "Hallo1_2"
     #ScrollView:
