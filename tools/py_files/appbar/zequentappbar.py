@@ -79,3 +79,4 @@ class ZequentAppBar(MDTopAppBar):
     def hide_alert_dialog(self, instance):
         self.languageDropdown.dismiss()
         self.submitDialog.dismiss()
+        

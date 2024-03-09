@@ -39,13 +39,14 @@ class ZequentConnectionLayout(ZequentGridLayout):
                 currStateLabel.text = self.app.root.ids.translator.translate('success_message')
                 currStateLabel.color = self.app.customColors["success"]
 
+                """
                 drone = ArduPlaneObject("name", "uuid", "model", "VTOl", "udp",
                                         "udpin:192.168.1.58:14550", None)
                 self.app.set_drone_instance(drone)
                 self.app.drone.connect()
                 self.app.drone.arm()
                 self.app.drone.takeoff()
-                #self.app.root.remove_widget(self.app.root.ids.language_selection)
+                """
                 self.app.connected = True
                 Clock.schedule_once(partial(self.app.changeScreen, 'main'), 3)
                 print("OK")

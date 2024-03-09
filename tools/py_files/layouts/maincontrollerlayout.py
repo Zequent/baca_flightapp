@@ -12,9 +12,11 @@ class MainControllerLayout(ZequentBoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.app=MDApp.get_running_app()
+        """
         self.drone: ArduPlaneObject =self.app.drone
         print(self.app.drone.get_current_pos())
         Clock.schedule_interval(self.test, 3)
+        """
     
 
     def build(self):

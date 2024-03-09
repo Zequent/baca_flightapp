@@ -1,7 +1,21 @@
 <MainControllerLayout>:
     orientation: "vertical"
-    ZequentCameraLayout:
-        pos: 0,0
+    ZequentFloatLayout:
+        ZequentCameraLayout:
+        BoxLayout:
+            pos_hint: {"top":1}
+            size_hint: 1,None
+            height: app.root.ids.appbar.height
+            canvas:
+                Color:
+                    rgba: 0, 0, 0,.3
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Label: 
+                text: "Hallo1"
+            Label: 
+                text: "Hallo1_2"
     #ScrollView:
         #do_scroll_y: True
         #MDGridLayout:

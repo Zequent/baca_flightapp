@@ -6,21 +6,21 @@
         id: mapview
         size_hint: 1,1
         pos: 0,0
-    Camera:
-        id: camera
-        resolution: (640, 480)
-        allow_stretch: True
-        keep_ratio: True
-        play: True
-        size_hint: .25,.25
-        pos: 0,0
-        canvas.before:
-            PushMatrix
-            Rotate:
-                angle: -90
-                origin: self.center
-        canvas.after:
-            PopMatrix
+    #Camera:
+        #id: camera
+        #resolution: (640, 480)
+        #allow_stretch: True
+        #keep_ratio: True
+        #play: True
+        #size_hint: .25,.25
+        #pos: 0,0
+        #canvas.before:
+            #PushMatrix
+            #Rotate:
+                #angle: -90
+                #origin: self.center
+        #canvas.after:
+            #PopMatrix
     Button:
         background_color: 0, 0, 0, 0
         size_hint: .25,.25
