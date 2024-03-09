@@ -6,18 +6,19 @@
             pos_hint: {"top":1}
             size_hint: 1,None
             height: app.root.ids.appbar.height
+            spacing: "10dp"
             canvas:
                 Color:
                     rgba: 0, 0, 0,.3
                 Rectangle:
                     pos: self.pos
                     size: self.size
-            ZequentButton: 
-                text: "Hallo1"
-                size_hint: 1,1
-                on_press: print("ddasf")
-            Label: 
-                text: "Hallo1_2"
+            ZequentActionIcon:
+                icon: "./static/icons/language_selection.png"
+                text: "test"
+            ZequentActionIcon:
+                icon: "./static/icons/language_selection.png"
+                text: "test"
     #ScrollView:
         #do_scroll_y: True
         #MDGridLayout:
