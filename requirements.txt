@@ -10,4 +10,5 @@ kivy==2.3.0
 kivymd==1.2.0
 geocoder==1.38.1
 plyer==2.1.0
+pymavlink==2.4.41
 #https://github.com/kivymd/KivyMD/archive/master.zip

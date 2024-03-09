@@ -154,6 +154,12 @@ class ZequentMavLinkApp(MDApp):
         if self.latitude is not None:
             print("{:.6f}".format(self.latitude))
             print("{:.6f}".format(self.longitude))
+
+    def set_drone_instance(self, drone):
+        self.drone = drone
+
+    def get_drone_instance(self):
+        return self.drone
         
 if __name__ == '__main__':
     ZequentMavLinkApp().run()

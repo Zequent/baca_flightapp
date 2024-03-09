@@ -14,6 +14,13 @@
         play: True
         size_hint: .25,.25
         pos: 0,0
+        canvas.before:
+            PushMatrix
+            Rotate:
+                angle: -90
+                origin: self.center
+        canvas.after:
+            PopMatrix
     Button:
         background_color: 0, 0, 0, 0
         size_hint: .25,.25

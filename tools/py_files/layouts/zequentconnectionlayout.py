@@ -5,14 +5,16 @@ from kivy.clock import Clock
 from functools import partial
 from kivymd.app import MDApp
 from tools.Utils import *
+from zequentmavlinklib.ArduPlane import ArduPlaneObject
 
 class ZequentConnectionLayout(ZequentGridLayout):
     
     connectionStatusText = ''
-    app= MDApp.get_running_app()
+
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.app = MDApp.get_running_app()
         
     
     def build(self):
@@ -36,6 +38,13 @@ class ZequentConnectionLayout(ZequentGridLayout):
                 button.disabled = True
                 currStateLabel.text = self.app.root.ids.translator.translate('success_message')
                 currStateLabel.color = self.app.customColors["success"]
+
+                drone = ArduPlaneObject("name", "uuid", "model", "VTOl", "udp",
+                                        "udpin:192.168.1.58:14550", None)
+                self.app.set_drone_instance(drone)
+                self.app.drone.connect()
+                self.app.drone.arm()
+                self.app.drone.takeoff()
                 #self.app.root.remove_widget(self.app.root.ids.language_selection)
                 self.app.connected = True
                 Clock.schedule_once(partial(self.app.changeScreen, 'main'), 3)
