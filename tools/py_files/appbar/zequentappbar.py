@@ -24,6 +24,7 @@ class ZequentAppBar(MDTopAppBar):
     
     def open_language_dropdown(self, item):
         self.languageDropdown = ZequentDropDownMenu(caller=item, items=self.getLanguageDropDownItems())
+        self.languageDropdown.pos_hint = {'center_x':.5,'center_y':.5}
         self.languageDropdown.open()
 
     def getLanguageDropDownItems(self):

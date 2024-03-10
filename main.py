@@ -68,6 +68,7 @@ class ZequentMavLinkApp(MDApp):
         "black": [0,0,0,0.9],
         #Jewel-primary
         "fourth": [0.00392, 0.14117, 0.3607],
+        #Casuals
         "success": [0,1,0,1],
         "failure": [1,0,0,1]
     }

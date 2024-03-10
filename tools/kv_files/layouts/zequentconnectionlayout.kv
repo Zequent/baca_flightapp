@@ -2,17 +2,15 @@
 
 <ZequentConnectionLayout>:
     size_hint: 1, 1
+    ZequentAnchorLayout:
+        ZequentDropDownItem:
+            id: vehicle_item
+            text: self.getInitialVehicle()
+            on_release: self.openVehicleMenu(self)
+            current_item: self.getInitialVehicle()
     ZequentGridLayout:
         cols:2 
         id: connection_type
-        
-        ZequentAnchorLayout:
-            ZequentDropDownItem:
-                id: vehicle_item
-                text: self.getInitialVehicle()
-                on_release: self.openVehicleMenu(self)
-                current_item: self.getInitialVehicle()
-        ZequentLabel:
         ZequentAnchorLayout:
             ZequentButton:
                 id: rfc_button
