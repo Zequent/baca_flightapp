@@ -3,7 +3,6 @@ from kivy.clock import Clock
 from tools.py_files.layouts.casuals.zequentboxlayout import *
 from tools.Utils import *
 from kivymd.app import MDApp
-from zequentmavlinklib.ArduPlane import ArduPlaneObject
 
 class MainControllerLayout(ZequentBoxLayout):
     

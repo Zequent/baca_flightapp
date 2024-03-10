@@ -39,6 +39,7 @@ from tools.py_files.translator.translator import *
 from tools.py_files.widgets.zequentactionicon import *
 from tools.py_files.widgets.zequentbutton import *
 from tools.py_files.widgets.zequentdialog import *
+from tools.py_files.widgets.zequentdropdownitem import *
 from tools.py_files.widgets.zequentdropdownmenu import *
 from tools.py_files.widgets.zequentflatbutton import *
 from tools.py_files.widgets.zequentlabel import *

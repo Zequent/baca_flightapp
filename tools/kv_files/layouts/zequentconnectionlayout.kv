@@ -4,6 +4,13 @@
         cols:2 
         id: connection_type
         ZequentAnchorLayout:
+            ZequentDropDownItem:
+                id: vehicle_item
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                text: root.getInitialVehicle()
+                on_release: root.openMenu(self)
+        ZequentLabel:
+        ZequentAnchorLayout:
             ZequentButton:
                 id: rfc_button
                 text: 'RFC'
