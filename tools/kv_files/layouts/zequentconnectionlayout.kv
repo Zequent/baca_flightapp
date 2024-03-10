@@ -1,8 +1,11 @@
+
+
 <ZequentConnectionLayout>:
     size_hint: 1, 1
     ZequentGridLayout:
         cols:2 
         id: connection_type
+        
         ZequentAnchorLayout:
             ZequentDropDownItem:
                 id: vehicle_item
@@ -25,10 +28,13 @@
                 on_press: self.disabled = True
         ZequentAnchorLayout:
             ZequentSingleTextInput:
+                opacity:
+                    0 if not rfc_button.disabled else 1
                 id: lte_address
                 disabled: not rfc_button.disabled
                 font_size: "40dp"
-    ZequentBoxLayout:
+    ZequentGridLayout:
+        cols: 1
         ZequentAnchorLayout:
             ZequentLabel:
                 id: connection_status_label
