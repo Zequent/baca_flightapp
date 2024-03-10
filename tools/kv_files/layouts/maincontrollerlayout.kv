@@ -2,6 +2,7 @@
     orientation: "vertical"
     ZequentFloatLayout:
         ZequentCameraLayout:
+            id: camera_layout
         ZequentBoxLayout:
             pos_hint: {"top":1}
             size_hint: 1,None
@@ -24,6 +25,12 @@
             pos_hint:  {'right': 1, 'bottom': 1}
             font_size: dp(20)
             text: "© Powered by Zequent"
+        ZequentBoxLayout:
+            pos_hint:  {'right': 1, 'bottom': 1}
+            MDFloatingActionButtonSpeedDial:
+                data: camera_layout.getMapViewActionsData()
+                root_button_anim: True
+                opacity: 1
     #ScrollView:
         #do_scroll_y: True
         #MDGridLayout:

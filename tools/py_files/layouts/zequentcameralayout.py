@@ -1,10 +1,29 @@
 from tools.py_files.layouts.casuals.zequentfloatlayout import *
 from kivy.uix.button import Button
+from tools.py_files.widgets.zequentmapview import *
+from kivymd.uix.button import MDFloatingActionButtonSpeedDial
 
 class ZequentCameraLayout(ZequentFloatLayout):
     
+    mapviewActions = None
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        
+
+    def getMapViewActionsData(self):
+        data={
+            'Geo': [
+                './static/icons/language_selection.png',
+                "on_press", lambda x: self.ids.mapview.setSatelitteMode()
+            ],
+            'PHP': [
+                './static/icons/language_selection.png',
+                "on_press", lambda x: self.ids.mapview.setDefaultMode()
+            ],
+            'C++': 'language-cpp',
+        }
+        return data
 
 
     def changeMainFeed(self,button:Button, *args):
