@@ -6,9 +6,9 @@
         ZequentAnchorLayout:
             ZequentDropDownItem:
                 id: vehicle_item
-                pos_hint: {'center_x': .5, 'center_y': .5}
-                text: root.getInitialVehicle()
-                on_release: root.openMenu(self)
+                text: self.getInitialVehicle()
+                on_release: self.openVehicleMenu(self)
+                current_item: self.getInitialVehicle()
         ZequentLabel:
         ZequentAnchorLayout:
             ZequentButton:

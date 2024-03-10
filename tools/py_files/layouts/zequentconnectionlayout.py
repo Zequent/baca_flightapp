@@ -5,8 +5,8 @@ from kivy.clock import Clock
 from functools import partial
 from kivymd.app import MDApp
 from tools.Utils import *
-from tools.py_files.widgets.zequentdropdownmenu import *
-from zequentmavlinklib.ArduPlane import VehicleTypes
+
+
 
 
 class ZequentConnectionLayout(ZequentGridLayout):
@@ -22,31 +22,6 @@ class ZequentConnectionLayout(ZequentGridLayout):
         self.connectionStatusText = self.root.ids.translator.translate('not_connected')
         pass
     
-    def getInitialVehicle(self):
-        return str(VehicleTypes(1).name)
-
-    def openMenu(self,item):
-        self.vehicleTypeDropDown = ZequentDropDownMenu(caller=item, items=self.getVehicleTypesItems())
-        self.vehicleTypeDropDown.open()
-        
-    def getVehicleTypesItems(self):
-        self.app = MDApp.get_running_app()
-        availableTypes = []
-        for vehicle in VehicleTypes:
-            currVehicleDropDownItem = {
-                "text": vehicle.name,
-                "font_size": self.app.fontSizes['primary'],
-                "on_release": lambda vehicleType=vehicle.name: self.setVehicle(vehicleType),
-            }
-            availableTypes.append(currVehicleDropDownItem)
-        return availableTypes
-    
-    def setVehicle(self, vehicleType):
-        self.ids.vehicle_item.set_item(vehicleType)
-        self.vehicleType = vehicleType
-        self.vehicleTypeDropDown.dismiss()
-        
-
     def tryConnection(self,button, connectionType, currStateLabel):
             ###TODO: Define connect function with api###
             import random
@@ -64,7 +39,7 @@ class ZequentConnectionLayout(ZequentGridLayout):
                 button.disabled = True
                 currStateLabel.text = self.app.root.ids.translator.translate('success_message')
                 currStateLabel.color = self.app.customColors["success"]
-                print(self.ids.vehicle_item.text)
+                print(self.ids.vehicle_item.current_item)
                 """
                 drone = ArduPlaneObject("name", "uuid", "model", "VTOl", "udp",
                                         "udpin:192.168.1.58:14550", None)
