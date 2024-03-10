@@ -24,6 +24,16 @@ from tools.py_files.layouts.zequentcameralayout import *
 from tools.py_files.layouts.zequentconnectionlayout import *
 from tools.py_files.layouts.zequentrootlayout import *
 
+##Layouts-CASUALS
+from tools.py_files.layouts.casuals.zequentanchorlayout import *
+from tools.py_files.layouts.casuals.zequentboxlayout import *
+from tools.py_files.layouts.casuals.zequentfloatlayout import *
+from tools.py_files.layouts.casuals.zequentgridlayout import *
+from tools.py_files.layouts.casuals.zequentpagelayout import *
+from tools.py_files.layouts.casuals.zequentrelativelayout import *
+from tools.py_files.layouts.casuals.zequentscatterlayout import *
+from tools.py_files.layouts.casuals.zequentstacklayout import *
+
 ##Navigationdrawer
 from tools.py_files.navigationdrawer.zequentnavigationdrawer import *
 
