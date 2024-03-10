@@ -7,7 +7,7 @@ from tools.py_files.layouts.casuals.zequentboxlayout import *
 from kivymd.uix.button import MDIconButton, MDFloatingActionButton
 from tools.py_files.widgets.zequentlabel import *
 from kivy.properties import ObjectProperty
-
+from kivy.graphics import *
 
 class ZequentActionIcon(MDBoxLayout):
     icon = ObjectProperty(None)
@@ -18,12 +18,13 @@ class ZequentActionIcon(MDBoxLayout):
         self.orientation = 'vertical'
         self.adaptive_size = True
         self.pos_hint = {'center_x': 0.5, 'center_y': 0.5}
+
     def on_icon(self, instance, value):
-        icon2 = MDFloatingActionButton(icon=value)
-        icon2.icon = value
-        icon2.type = 'small'
-        icon2.md_bg_color = None
-        self.add_widget(icon2)
+        icon = MDIconButton(icon=value)
+        icon.icon = value
+        icon.type = 'small'
+        
+        self.add_widget(icon)
 
     def on_text(self, instance, value):
         label = MDLabel(text=value, valign='top', halign='center')
