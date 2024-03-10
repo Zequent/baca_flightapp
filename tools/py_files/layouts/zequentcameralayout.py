@@ -13,15 +13,14 @@ class ZequentCameraLayout(ZequentFloatLayout):
 
     def getMapViewActionsData(self):
         data={
-            'Geo': [
-                './static/icons/language_selection.png',
+            'Satelitte': [
+                './static/icons/satelitte_icon.png',
                 "on_press", lambda x: self.ids.mapview.setSatelitteMode()
             ],
-            'PHP': [
-                './static/icons/language_selection.png',
+            'OSM': [
+                './static/icons/osm_icon.png',
                 "on_press", lambda x: self.ids.mapview.setDefaultMode()
             ],
-            'C++': 'language-cpp',
         }
         return data
 
