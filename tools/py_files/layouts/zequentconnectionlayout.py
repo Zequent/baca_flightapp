@@ -5,7 +5,7 @@ from kivy.clock import Clock
 from functools import partial
 from kivymd.app import MDApp
 from tools.Utils import *
-
+from tools.py_files.widgets.zequenttoast import *
 
 
 
@@ -17,9 +17,11 @@ class ZequentConnectionLayout(ZequentGridLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.app = MDApp.get_running_app()
+        if self.app.root is not None:
+            self.connectionStatusText = self.app.root.ids.translator.translate('not_connected')
+            
     
     def build(self):
-        self.connectionStatusText = self.root.ids.translator.translate('not_connected')
         pass
     
     def tryConnection(self,button, connectionType, currStateLabel):
@@ -31,7 +33,13 @@ class ZequentConnectionLayout(ZequentGridLayout):
                 print("RFC")
             elif self.ids.lte_button.disabled == False:
                 lteAddress=self.ids.lte_address
-                print("LTE adress:"+str(lteAddress.text))
+                lteAddress=str(lteAddress.text)
+                print(lteAddress)
+                if lteAddress is None or lteAddress is "":
+                    ZequentToast().zequentToast(self.app.root.ids.translator.translate('lte_address_input_invalid'))
+                    return 
+                else:
+                    print("LTE adress:"+ lteAddress)
             if randInt == 0:
                 currStateLabel.text = self.app.root.ids.translator.translate('failed_message')
                 currStateLabel.color = self.app.customColors["failure"]

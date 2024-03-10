@@ -8,5 +8,6 @@
     "restart_text": "Bei der Sprachänderung, wird die App geschlossen, sind Sie sich sicher?",
 
     "main": "Hauptmenü",
-    "connection": "Verbindung"
+    "connection": "Verbindung",
+    "lte_address_input_invalid": "Bitte LTE Adresse richtig eingeben!"
 }
