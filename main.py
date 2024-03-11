@@ -119,6 +119,7 @@ class ZequentMavLinkApp(MDApp):
         super().__init__(**kwargs)
         self.theme_cls.theme_style = "Dark"
         self.connected = False
+        self.drone = None
         importKV_FILES()
         
         if platform == 'android':

@@ -6,6 +6,7 @@ from functools import partial
 from kivymd.app import MDApp
 from tools.Utils import *
 from tools.py_files.widgets.zequenttoast import *
+from zequentmavlinklib.ArduPlane import ArduPlaneObject, ConnectionType
 
 
 
@@ -48,14 +49,11 @@ class ZequentConnectionLayout(ZequentGridLayout):
                 currStateLabel.text = self.app.root.ids.translator.translate('success_message')
                 currStateLabel.color = self.app.customColors["success"]
                 print(self.ids.vehicle_item.current_item)
-                """
-                drone = ArduPlaneObject("name", "uuid", "model", "VTOl", "udp",
-                                        "udpin:192.168.1.58:14550", None)
+                print(connectionType)
+                drone = ArduPlaneObject("TestVtol","testuuid", "OrgId", "TestModel", ConnectionType.UDPIN, "127.0.0.1",
+                                        "14550", None)
                 self.app.set_drone_instance(drone)
                 self.app.drone.connect()
-                self.app.drone.arm()
-                self.app.drone.takeoff()
-                """
                 self.app.connected = True
                 Clock.schedule_once(partial(self.app.changeScreen, 'main'), 3)
                 print("OK")
