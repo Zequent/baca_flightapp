@@ -17,7 +17,7 @@ class ZequentMapView(MapView):
         self.app = MDApp.get_running_app()
         self.zoom = 22
         self.marker = MapMarker(lat = self.latitude, lon = self.longitude)
-        self.marker.source = ""
+        self.marker.source = "./static/icons/drone_icon.png"
         self.add_marker(marker=self.marker)
         self.drone: ArduPlaneObject = self.app.drone
         pos = self.drone.get_current_pos()
