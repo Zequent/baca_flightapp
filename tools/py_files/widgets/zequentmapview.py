@@ -18,10 +18,21 @@ class ZequentMapView(MapView):
         self.zoom = 22
         self.marker = MapMarker(lat = self.latitude, lon = self.longitude)
         self.marker.source = "./static/icons/drone_icon.png"
-        self.add_marker(marker=self.marker)
-        self.drone: ArduPlaneObject = self.app.drone
-        pos = self.drone.get_current_pos()
+        
+        self.penultimate = MapMarker(lat = self.latitude, lon = self.longitude)
+        self.penultimate.source = "./static/icons/drone_icon.png"
+        self.penultimate.opacity = .5
 
+        self.last = MapMarker(lat = self.latitude, lon = self.longitude)
+        self.last.source = "./static/icons/drone_icon.png"
+        self.last.opacity = .2
+
+
+        self.add_marker(marker=self.marker)
+        self.add_marker(marker=self.penultimate)
+        self.add_marker(marker=self.last)
+        self.drone: ArduPlaneObject = self.app.drone
+       
         print(str(self.lat) + " " + str(self.lon))
         
 
@@ -29,6 +40,12 @@ class ZequentMapView(MapView):
         # self.updateMap()
 
     def change_marker(self, templat, templon):
+        self.last.lat = self.penultimate.lat
+        self.last.lon = self.penultimate.lon
+        
+        self.penultimate.lat = self.marker.lat
+        self.penultimate.lon = self.marker.lon
+
         self.marker.lat = templat
         self.marker.lon = templon
         self.center_on(templat, templon)

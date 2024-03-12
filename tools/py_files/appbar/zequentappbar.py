@@ -1,12 +1,16 @@
+import random
 from kivymd.uix.toolbar.toolbar import MDTopAppBar
 import json
 from tools.Utils import *
 from kivymd.app import MDApp
+from tools.py_files.screenmanager.zequentrootscreenmanager import ZequentRootScreenManager
 from tools.py_files.widgets.zequentdropdownmenu import *
 from tools.py_files.widgets.zequentdialog import *
 from tools.py_files.widgets.zequentflatbutton import *
 from tools.py_files.widgets.zequentbutton import *
 from functools import partial
+
+from tools.py_files.widgets.zequentmapview import ZequentMapView
 
 
 class ZequentAppBar(MDTopAppBar):
@@ -80,4 +84,27 @@ class ZequentAppBar(MDTopAppBar):
     def hide_alert_dialog(self, instance):
         self.languageDropdown.dismiss()
         self.submitDialog.dismiss()
+
+    def open_special_commands(self, item):
+        self.app= MDApp.get_running_app()
+        self.specialCommandsDropdown = ZequentDropDownMenu(caller=item, items=self.getSpecialCommandsDropDownItems())
+        self.specialCommandsDropdown.pos_hint = {'right':1,'top':1}
+        self.specialCommandsDropdown.open()
+
+    def getSpecialCommandsDropDownItems(self):
+        availableSpecialCommands = []
+        currSpecialCommandDropDownItem = {
+            "text": 'Test',
+            "font_size": self.app.fontSizes['primary'],
+            "on_release": lambda command='Test': self.test(command),
+        }
+        availableSpecialCommands.append(currSpecialCommandDropDownItem)
+        return availableSpecialCommands
         
+        
+    def test(self,command):
+        sm: ZequentRootScreenManager = self.app.root.ids.sm
+        mapview: ZequentMapView = sm.current_screen.ids.main_controller_layout.ids.camera_layout.ids.mapview
+        randInt = random.uniform(0,.0000200)
+    
+        print(mapview.change_marker(0.0000008,randInt))

@@ -3,4 +3,4 @@
     title: app.navBarTitle
     md_bg_color: app.customColors["first"]
     left_action_items: [["menu" , lambda x: app.root.ids.nav_drawer.set_state("open")]] if app.connected else ''
-    right_action_items: [["./static/icons/language_selection.png", lambda x: root.open_language_dropdown(self)]] if not app.connected else ''
+    right_action_items: [["./static/icons/language_selection.png", lambda x: root.open_language_dropdown(self)]] if not app.connected else [["./static/icons/drone_icon.png", lambda x: root.open_special_commands(self)]]
