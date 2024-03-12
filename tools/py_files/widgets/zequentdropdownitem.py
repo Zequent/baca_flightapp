@@ -1,5 +1,6 @@
 from kivymd.uix.dropdownitem.dropdownitem import MDDropDownItem
 from zequentmavlinklib.ArduPlane import VehicleTypes
+from zequentmavlinklib.ArduPlane import ConnectionType
 from tools.py_files.widgets.zequentdropdownmenu import *
 from kivymd.app import MDApp
 
@@ -11,6 +12,8 @@ class ZequentDropDownItem(MDDropDownItem):
     def build(self):
         pass
 
+
+    ##VEHICLES
     def getInitialVehicle(self):
         return str(VehicleTypes(1).name)
 
@@ -33,3 +36,27 @@ class ZequentDropDownItem(MDDropDownItem):
         self.set_item(vehicleType)
         self.app.vehicleType = vehicleType
         self.vehicleTypeDropDown.dismiss()
+
+    ##LTE CONNECITON TYPE
+    def getInitialConnectionType(self):
+        return str(ConnectionType('udpin:').name)
+    
+    def openLTEConnectionTypeMenu(self,item):
+        self.lteConnectionTypeDropDown = ZequentDropDownMenu(caller=item, items=self.getLTEConnectionTypesItems())
+        self.lteConnectionTypeDropDown.open()
+
+    def getLTEConnectionTypesItems(self):
+        availableTypes = []
+        for connectionType in ConnectionType:
+            currLTEConnectionTypeDropDownItem = {
+                "text": connectionType.name,
+                "font_size": self.app.fontSizes['primary'],
+                "on_release": lambda connectionType=connectionType.name: self.setLTEConnectionType(connectionType),
+            }
+            availableTypes.append(currLTEConnectionTypeDropDownItem)
+        return availableTypes
+    
+    def setLTEConnectionType(self, connectionType):
+        self.set_item(connectionType)
+        self.app.connectionType = connectionType
+        self.lteConnectionTypeDropDown.dismiss()

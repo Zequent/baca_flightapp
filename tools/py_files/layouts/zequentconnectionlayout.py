@@ -5,6 +5,7 @@ from kivy.clock import Clock
 from functools import partial
 from kivymd.app import MDApp
 from tools.Utils import *
+from tools.py_files.widgets.zequentdropdownitem import ZequentDropDownItem
 from tools.py_files.widgets.zequenttoast import *
 from zequentmavlinklib.ArduPlane import ArduPlaneObject, ConnectionType
 
@@ -30,17 +31,22 @@ class ZequentConnectionLayout(ZequentGridLayout):
             import random
             self.app= MDApp.get_running_app()
             randInt = random.randint(0,1)
+    
+
             if self.ids.rfc_button.disabled == False:
                 print("RFC")
             elif self.ids.lte_button.disabled == False:
                 lteAddress=self.ids.lte_address
                 lteAddress=str(lteAddress.text)
-                print(lteAddress)
                 if lteAddress is None or lteAddress is "":
                     ZequentToast().zequentToast(self.app.root.ids.translator.translate('lte_address_input_invalid'))
                     return 
                 else:
                     print("LTE adress:"+ lteAddress)
+                    connectionType: ZequentDropDownItem = self.ids.lte_connection_type 
+                    print(connectionType.current_item)
+
+                    print(lteAddress)
             if randInt == 0:
                 currStateLabel.text = self.app.root.ids.translator.translate('failed_message')
                 currStateLabel.color = self.app.customColors["failure"]

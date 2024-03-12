@@ -9,7 +9,7 @@
             on_release: self.openVehicleMenu(self)
             current_item: self.getInitialVehicle()
     ZequentGridLayout:
-        cols:2 
+        cols:1
         id: connection_type
         ZequentAnchorLayout:
             ZequentButton:
@@ -19,23 +19,32 @@
                 on_press: 
                     lte_button.disabled = False
                     self.disabled=True
-        ZequentLabel:
-        ZequentAnchorLayout:
-            ZequentButton:
-                id: lte_button
-                text: 'LTE'
-                disabled: False
-                on_press: 
-                    rfc_button.disabled = False
-                    self.disabled=True
-        ZequentAnchorLayout:
-            ZequentSingleTextInput:
+        ZequentGridLayout:
+            cols:3
+            ZequentAnchorLayout:
+                ZequentButton:
+                    id: lte_button
+                    text: 'LTE'
+                    disabled: False
+                    on_press: 
+                        rfc_button.disabled = False
+                        self.disabled=True
+            ZequentAnchorLayout:
+                ZequentSingleTextInput:
+                    opacity:
+                        0 if not rfc_button.disabled else 1
+                    id: lte_address
+                    disabled: False
+                    font_size: "40dp"
+                    text: "127.0.0.1"
+            ZequentAnchorLayout:
                 opacity:
                     0 if not rfc_button.disabled else 1
-                id: lte_address
-                disabled: False
-                font_size: "40dp"
-                text: "127.0.0.1"
+                ZequentDropDownItem:
+                    id: lte_connection_type
+                    text: self.getInitialConnectionType()
+                    on_release: self.openLTEConnectionTypeMenu(self)
+                    current_item: self.getInitialConnectionType()
     ZequentGridLayout:
         cols: 1
         ZequentAnchorLayout:
