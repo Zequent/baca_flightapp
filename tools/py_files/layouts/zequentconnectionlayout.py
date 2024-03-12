@@ -20,7 +20,7 @@ class ZequentConnectionLayout(ZequentGridLayout):
         self.app = MDApp.get_running_app()
         if self.app.root is not None:
             self.connectionStatusText = self.app.root.ids.translator.translate('not_connected')
-            
+         
     
     def build(self):
         pass

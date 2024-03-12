@@ -15,21 +15,25 @@
             ZequentButton:
                 id: rfc_button
                 text: 'RFC'
-                disabled: not lte_button.disabled 
-                on_press: self.disabled = True
+                disabled: True 
+                on_press: 
+                    lte_button.disabled = False
+                    self.disabled=True
         ZequentLabel:
         ZequentAnchorLayout:
             ZequentButton:
                 id: lte_button
                 text: 'LTE'
-                disabled: not rfc_button.disabled
-                on_press: self.disabled = True
+                disabled: False
+                on_press: 
+                    rfc_button.disabled = False
+                    self.disabled=True
         ZequentAnchorLayout:
             ZequentSingleTextInput:
                 opacity:
                     0 if not rfc_button.disabled else 1
                 id: lte_address
-                disabled: not rfc_button.disabled
+                disabled: False
                 font_size: "40dp"
                 text: "127.0.0.1"
     ZequentGridLayout:
