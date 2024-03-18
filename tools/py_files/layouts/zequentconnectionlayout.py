@@ -57,13 +57,10 @@ class ZequentConnectionLayout(ZequentGridLayout):
                 print(self.ids.vehicle_item.current_item)
                 print(connectionType)
 
-                """
                 drone = ArduPlaneObject("TestVtol","testuuid", "OrgId", "TestModel", ConnectionType.UDPIN, "127.0.0.1",
                                         "14550", None)
                 self.app.set_drone_instance(drone)
                 self.app.drone.connect()
-
-                """
                 
                 Clock.schedule_once(partial(self.app.changeScreen, 'main'), 3)
                 print("OK")

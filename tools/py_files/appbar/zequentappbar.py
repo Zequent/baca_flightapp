@@ -9,6 +9,8 @@ from tools.py_files.widgets.zequentdialog import *
 from tools.py_files.widgets.zequentflatbutton import *
 from tools.py_files.widgets.zequentbutton import *
 from functools import partial
+from zequentmavlinklib.ArduPlane import ArduPlaneObject
+
 
 from tools.py_files.widgets.zequentmapview import ZequentMapView
 
@@ -16,7 +18,7 @@ from tools.py_files.widgets.zequentmapview import ZequentMapView
 class ZequentAppBar(MDTopAppBar):
 
     translator = None
-    app=MDApp.get_running_app()
+  
     submitDialog = None
     languageDropdown = None
 
@@ -91,14 +93,25 @@ class ZequentAppBar(MDTopAppBar):
         self.specialCommandsDropdown.pos_hint = {'right':1,'top':1}
         self.specialCommandsDropdown.open()
 
+
+    #TODO sabri! Commands in List
+
     def getSpecialCommandsDropDownItems(self):
+        self.app=MDApp.get_running_app()
+        self.drone: ArduPlaneObject = self.app.drone
         availableSpecialCommands = []
         currSpecialCommandDropDownItem = {
             "text": 'Test',
             "font_size": self.app.fontSizes['primary'],
             "on_release": lambda command='Test': self.test(command),
         }
+        currSpecialCommandDropDownItem2 = {
+            "text": 'Take-Off (Default)',
+            "font_size": self.app.fontSizes['primary'],
+            "on_release": lambda command='Takeoff': self.drone.takeoff(),
+        }
         availableSpecialCommands.append(currSpecialCommandDropDownItem)
+        availableSpecialCommands.append(currSpecialCommandDropDownItem2)
         return availableSpecialCommands
         
         
