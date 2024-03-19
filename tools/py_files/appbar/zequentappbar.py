@@ -120,4 +120,4 @@ class ZequentAppBar(MDTopAppBar):
         mapview: ZequentMapView = sm.current_screen.ids.main_controller_layout.ids.camera_layout.ids.mapview
         randInt = random.uniform(0,.0000200)
     
-        print(mapview.change_marker(0.0000008,randInt))
+        print(mapview.change_pos_marker(0.0000008,randInt))

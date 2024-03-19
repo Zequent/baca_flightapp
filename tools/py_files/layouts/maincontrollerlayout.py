@@ -1,5 +1,5 @@
 import traceback
-from kivy.clock import Clock
+from kivy.clock import Clock as clock
 
 from tools.py_files.layouts.casuals.zequentboxlayout import *
 from tools.Utils import *
@@ -17,9 +17,8 @@ class MainControllerLayout(ZequentBoxLayout):
         self.app=MDApp.get_running_app()
         self.app.connected = True
         self.drone: ArduPlaneObject =self.app.drone
-        threading.Thread(target=lambda: Utils.every(0.1, self.get_current_pos_from_drone)).start()
         if self.drone is not None:
-            arm_msg = self.drone.arm()
+            threading.Thread(target=lambda: Utils.every(0.1, self.get_current_pos_from_drone)).start()
 
     def build(self):
         pass
@@ -31,4 +30,4 @@ class MainControllerLayout(ZequentBoxLayout):
             lat = response.lat * 0.0000001
             lon = response.lon * 0.0000001
             mapview: ZequentMapView = self.ids.camera_layout.ids.mapview 
-            mapview.change_marker(lat, lon)
+            mapview.change_pos_marker(lat, lon)

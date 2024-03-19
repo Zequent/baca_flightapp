@@ -2,6 +2,7 @@ from kivy_garden.mapview import MapView, MapMarker, MapSource
 import geocoder
 from zequentmavlinklib.ArduPlane import ArduPlaneObject
 from kivy.properties import NumericProperty
+from kivymd.icon_definitions import md_icons
 
 
 currentGeocoder = geocoder.ip('me')
@@ -12,9 +13,13 @@ class ZequentMapView(MapView):
     latitude = NumericProperty(47.28692205219049)
     longitude = NumericProperty(11.147142586915848)
 
+    home_pos_lat = 0
+    home_pos_lon = 0
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.app = MDApp.get_running_app()
+        self.drone: ArduPlaneObject = self.app.drone
         self.zoom = 22
         self.marker = MapMarker(lat = self.latitude, lon = self.longitude)
         self.marker.source = "./static/icons/drone_icon.png"
@@ -27,10 +32,19 @@ class ZequentMapView(MapView):
         self.last.source = "./static/icons/drone_icon.png"
         self.last.opacity = .2
 
+        #Home Pos marker
+        home_pos_icon_source = MapMarker
+        response = self.drone.get_home_pos()
+        home_pos_lat = response.latitude * 0.0000001
+        home_pos_lon = response.longitude * 0.0000001
+
+        self.home_pos_marker = MapMarker(lat = home_pos_lat, lon =home_pos_lon)
+        self.home_pos_marker.source = './static/icons/baseline_home_white_24dp.png'
 
         self.add_marker(marker=self.marker)
         self.add_marker(marker=self.penultimate)
         self.add_marker(marker=self.last)
+        self.add_marker(marker=self.home_pos_marker)
         self.drone: ArduPlaneObject = self.app.drone
        
         print(str(self.lat) + " " + str(self.lon))
@@ -39,7 +53,7 @@ class ZequentMapView(MapView):
         self.center_on(self.latitude, self.longitude)
         # self.updateMap()
 
-    def change_marker(self, templat, templon):
+    def change_pos_marker(self, templat, templon):
         self.last.lat = self.penultimate.lat
         self.last.lon = self.penultimate.lon
         

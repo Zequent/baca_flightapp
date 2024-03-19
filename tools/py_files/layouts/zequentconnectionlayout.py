@@ -47,6 +47,8 @@ class ZequentConnectionLayout(ZequentGridLayout):
                     print(connectionType.current_item)
 
                     print(lteAddress)
+
+            #TODO hier noch ein check einbauen - richtig Connected oder nicht (Simulator bei @Mina aufsetzen!!)
             if randInt == 0:
                 currStateLabel.text = self.app.root.ids.translator.translate('failed_message')
                 currStateLabel.color = self.app.customColors["failure"]
