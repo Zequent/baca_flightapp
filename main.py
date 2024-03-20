@@ -122,7 +122,7 @@ class ZequentMavLinkApp(MDApp):
         self.drone = None
         importKV_FILES()
         
-        if platform == 'android':
+        ''' if platform == 'android':
             gps.configure(on_location=self.on_gps_location)
             gps.start()
             toast("GPS on")
@@ -133,7 +133,7 @@ class ZequentMavLinkApp(MDApp):
                 Clock.schedule_interval(self.updateLocation,1)
             except TypeError:
                 print('Error on geolocation')
-            toast("GPS only configured for Android")
+            toast("GPS only configured for Android")'''
         
 
     def updateLocation(self, _):

@@ -101,9 +101,9 @@ class ZequentAppBar(MDTopAppBar):
         self.drone: ArduPlaneObject = self.app.drone
         availableSpecialCommands = []
         currSpecialCommandDropDownItem = {
-            "text": 'Test',
+            "text": 'Arm Vehicle',
             "font_size": self.app.fontSizes['primary'],
-            "on_release": lambda command='Test': self.test(command),
+            "on_release": lambda command='Arm Vehicle': self.drone.arm(),
         }
         currSpecialCommandDropDownItem2 = {
             "text": 'Take-Off (Default)',
