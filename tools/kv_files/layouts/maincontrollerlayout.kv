@@ -29,6 +29,11 @@
         ZequentBoxLayout:
             pos_hint:  {'right': 1, 'bottom': 1}
             MDFloatingActionButtonSpeedDial:
+                canvas.before:
+                    Color:
+                        rgba: app.customColors["first"]
+                #label_bg_color: app.customColors["first"]
+                hint_animation: False
                 data: camera_layout.getMapViewActionsData()
                 root_button_anim: True
                 opacity: 1
