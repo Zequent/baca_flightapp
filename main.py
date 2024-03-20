@@ -71,9 +71,11 @@ class ZequentMavLinkApp(MDApp):
 
     customColors = {
         #Gold
-        "first": [0.78,0.56,0.05,1],
+        #"first": [0.78,0.56,0.05,1],
+        "first": [0,0,0,1],
         #Gold-secondary
-        "second": [0.78,0.56,0.05,0.5],
+        #"second": [0.78,0.56,0.05,0.5],
+        "second": [0,0,0,1],
         #Black
         "black": [0,0,0,0.9],
         #Jewel-primary
