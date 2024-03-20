@@ -1,4 +1,5 @@
 import random
+import threading
 from kivymd.uix.toolbar.toolbar import MDTopAppBar
 import json
 from tools.Utils import *
@@ -9,10 +10,11 @@ from tools.py_files.widgets.zequentdialog import *
 from tools.py_files.widgets.zequentflatbutton import *
 from tools.py_files.widgets.zequentbutton import *
 from functools import partial
-from zequentmavlinklib.ArduPlane import ArduPlaneObject
+from zequentmavlinklib.ArduPlane import ArduPlaneObject, MavResult
 
 
 from tools.py_files.widgets.zequentmapview import ZequentMapView
+from tools.py_files.widgets.zequenttoast import ZequentToast
 
 
 class ZequentAppBar(MDTopAppBar):
@@ -21,6 +23,8 @@ class ZequentAppBar(MDTopAppBar):
   
     submitDialog = None
     languageDropdown = None
+
+    mavResult: MavResult = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -103,12 +107,12 @@ class ZequentAppBar(MDTopAppBar):
         currSpecialCommandDropDownItem = {
             "text": 'Arm Vehicle',
             "font_size": self.app.fontSizes['primary'],
-            "on_release": lambda command='Arm Vehicle': self.drone.arm(),
+            "on_release": lambda command='Arm Vehicle': self.execute_special_command(self.drone.arm),
         }
         currSpecialCommandDropDownItem2 = {
             "text": 'Take-Off (Default)',
             "font_size": self.app.fontSizes['primary'],
-            "on_release": lambda command='Takeoff': self.drone.takeoff(),
+            "on_release": lambda command='Takeoff': self.execute_special_command(self.drone.takeoff),
         }
         availableSpecialCommands.append(currSpecialCommandDropDownItem)
         availableSpecialCommands.append(currSpecialCommandDropDownItem2)
@@ -121,3 +125,17 @@ class ZequentAppBar(MDTopAppBar):
         randInt = random.uniform(0,.0000200)
     
         print(mapview.change_pos_marker(0.0000008,randInt))
+
+    def execute_special_command(self, method):
+        thread = threading.Thread(target= lambda: self.execute_special_command_worker(method))
+        thread.start()
+        thread.join()
+        print("Command Execuiton finished")
+        if hasattr(self.mavResult, 'details'):
+            print(self.mavResult.details)
+            ZequentToast().zequentToast(self.mavResult.details)
+       
+
+
+    def execute_special_command_worker(self, method):
+        self.mavResult =  method()
