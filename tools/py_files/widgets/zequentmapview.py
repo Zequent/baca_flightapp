@@ -27,7 +27,6 @@ class ZequentMapView(MapView):
         self.drone: ArduPlaneObject = self.app.drone
         self.zoom = 22
         self.droneIcon = Utils.get_drone_icon(self.app.get_vehicle_type())
-        self.copterIcon = Utils.get_drone_icon('copter')
 
         self.marker = MapMarker(lat = self.latitude, lon = self.longitude)
         self.marker.source = self.droneIcon
@@ -78,10 +77,11 @@ class ZequentMapView(MapView):
         rotationImage = rotationImage.convert('RGBA')
         rotationImage = rotationImage.rotate(angle=-60)
         rotationImage = rotationImage.resize((48,48))
-        rotationImage.save('./static/icons/cache/plane-rotated-60.png', format='PNG', optimize=True, quality=90)
-        self.last.source = './static/icons/cache/plane-rotated-60.png'
-        self.penultimate.source='./static/icons/cache/plane-rotated-60.png'
-        self.marker.source='./static/icons/cache/plane-rotated-60.png'
+        fileName = './static/icons/cache/temp_rotation.png'
+        rotationImage.save(fileName, format='PNG', optimize=True, quality=90)
+        self.last.source = fileName
+        self.penultimate.source = fileName
+        self.marker.source = fileName
         
 
     def setSatelitteMode(self):
