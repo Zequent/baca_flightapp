@@ -60,7 +60,7 @@ class ZequentMapView(MapView):
         # self.updateMap()
 
     def change_pos_marker(self, templat, templon):
-        threading.Thread(target=self.update_marker, args=(templat,templon)).start()
+        threading.Thread(target=self.update_marker).start()
         self.last.lat = self.penultimate.lat
         self.last.lon = self.penultimate.lon
         
@@ -72,7 +72,7 @@ class ZequentMapView(MapView):
         self.center_on(templat, templon)
 
     @mainthread
-    def update_marker(self, templat, templon):
+    def update_marker(self):
         rotationImage = Image.open(self.droneIcon)
         rotationImage = rotationImage.convert('RGBA')
         rotationImage = rotationImage.rotate(angle=-60)
