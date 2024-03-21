@@ -63,7 +63,7 @@ class ZequentConnectionLayout(ZequentGridLayout):
                                         "14550", None)
                 self.app.set_drone_instance(drone)
                 self.app.drone.connect()
-                self.app.set_vehicle_type(self.ids.vehicle_item.current_item)
+                self.app.set_vehicle_type(str(self.ids.vehicle_item.current_item))
                 
                 Clock.schedule_once(partial(self.app.changeScreen, 'main'), 3)
                 print("OK")

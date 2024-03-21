@@ -65,9 +65,9 @@ class Utils:
 
     @staticmethod
     def get_drone_icon(droneType):
-        if droneType.lower() is 'vtol':
+        if droneType.lower() == 'vtol':
             return "./static/icons/drone/vtol.png"
-        elif droneType.lower() is 'copter':
+        elif droneType.lower() == 'copter':
             return "./static/icons/drone/copter.png"
         
 
