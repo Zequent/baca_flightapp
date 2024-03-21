@@ -1,14 +1,15 @@
+import threading
 import time
 from kivy_garden.mapview import MapView, MapMarker, MapSource
 import geocoder
 from zequentmavlinklib.ArduPlane import ArduPlaneObject
 from kivy.properties import NumericProperty
 from kivymd.icon_definitions import md_icons
-from PIL import Image
-
 from tools.Utils import Utils
-
-
+from PIL import Image
+from kivy.clock import Clock
+from functools import partial
+from kivy.clock import mainthread
 currentGeocoder = geocoder.ip('me')
 from kivymd.app import MDApp
 
@@ -26,6 +27,8 @@ class ZequentMapView(MapView):
         self.drone: ArduPlaneObject = self.app.drone
         self.zoom = 22
         self.droneIcon = Utils.get_drone_icon(self.app.get_vehicle_type())
+        self.copterIcon = Utils.get_drone_icon('copter')
+
         self.marker = MapMarker(lat = self.latitude, lon = self.longitude)
         self.marker.source = self.droneIcon
         
@@ -58,7 +61,7 @@ class ZequentMapView(MapView):
         # self.updateMap()
 
     def change_pos_marker(self, templat, templon):
-        self.update_marker(templat, templon)
+        threading.Thread(target=self.update_marker, args=(templat,templon)).start()
         self.last.lat = self.penultimate.lat
         self.last.lon = self.penultimate.lon
         
@@ -69,18 +72,17 @@ class ZequentMapView(MapView):
         self.marker.lon = templon
         self.center_on(templat, templon)
 
+    @mainthread
     def update_marker(self, templat, templon):
-        
-        #test = Image.open(self.droneIcon)
-        #test.convert('RGB')
-        #test.rotate(60)
-        #test.save('./static/icons/cache/plane-rotated-60.png', 'PNG')
-        test2 = Utils.get_drone_icon('copter')
-       # self.marker = MapMarker(lat = templat, lon = templon)
-        self.marker.source = test2
-        #self.add_marker(self.marker)
+        rotationImage = Image.open(self.droneIcon)
+        rotationImage = rotationImage.convert('RGBA')
+        rotationImage = rotationImage.rotate(angle=-60)
+        rotationImage = rotationImage.resize((48,48))
+        rotationImage.save('./static/icons/cache/plane-rotated-60.png', format='PNG', optimize=True, quality=90)
         self.last.source = './static/icons/cache/plane-rotated-60.png'
-        self.penultimate.source = './static/icons/cache/plane-rotated-60.png'
+        self.penultimate.source='./static/icons/cache/plane-rotated-60.png'
+        self.marker.source='./static/icons/cache/plane-rotated-60.png'
+        
 
     def setSatelitteMode(self):
         self.apiKey = 'AIzaSyBSwt7u9Pn-Hw09bWsiQ-ZQqlE7aGf5Gxg'
