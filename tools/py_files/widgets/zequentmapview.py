@@ -4,6 +4,8 @@ from zequentmavlinklib.ArduPlane import ArduPlaneObject
 from kivy.properties import NumericProperty
 from kivymd.icon_definitions import md_icons
 
+from tools.Utils import Utils
+
 
 currentGeocoder = geocoder.ip('me')
 from kivymd.app import MDApp
@@ -21,15 +23,17 @@ class ZequentMapView(MapView):
         self.app = MDApp.get_running_app()
         self.drone: ArduPlaneObject = self.app.drone
         self.zoom = 22
+        droneIcon = Utils.get_drone_icon(self.app.get_vehicle_type())
+
         self.marker = MapMarker(lat = self.latitude, lon = self.longitude)
-        self.marker.source = "./static/icons/drone_icon.png"
+        self.marker.source = droneIcon
         
         self.penultimate = MapMarker(lat = self.latitude, lon = self.longitude)
-        self.penultimate.source = "./static/icons/drone_icon.png"
+        self.penultimate.source = droneIcon
         self.penultimate.opacity = .5
 
         self.last = MapMarker(lat = self.latitude, lon = self.longitude)
-        self.last.source = "./static/icons/drone_icon.png"
+        self.last.source = droneIcon
         self.last.opacity = .2
 
         #Home Pos marker

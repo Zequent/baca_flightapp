@@ -61,4 +61,13 @@ class Utils:
             # logger.exception("Problem while executing repetitive task.")
             # skip tasks if we are behind schedule:
             next_time += (time.time() - next_time) // delay * delay + delay
+    
+
+    @staticmethod
+    def get_drone_icon(droneType):
+        if droneType.lower() is 'vtol':
+            return "./static/icons/drone/vtol.png"
+        elif droneType.lower() is 'copter':
+            return "./static/icons/drone/copter.png"
+        
 

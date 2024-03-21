@@ -178,6 +178,12 @@ class ZequentMavLinkApp(MDApp):
 
     def get_drone_instance(self):
         return self.drone
+    
+    def set_vehicle_type(self, vehicleType):
+        self.vehicleType = vehicleType
+
+    def get_vehicle_type(self):
+        return self.vehicleType
         
 if __name__ == '__main__':
     ZequentMavLinkApp().run()
