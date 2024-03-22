@@ -21,6 +21,8 @@ class ZequentMapView(MapView):
     home_pos_lat = 0
     home_pos_lon = 0
 
+    start_coordinate = None
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.app = MDApp.get_running_app()
@@ -71,13 +73,21 @@ class ZequentMapView(MapView):
         self.center_on(templat, templon)
 
     @mainthread
-    def update_marker(self, hdeg):
-        print(hdeg)
+    def update_marker(self, hdg):
+        print(hdg)
+        if self.start_coordinate is None:
+            self.start_coordinate = hdg
+
+        newAngle = hdg-self.start_coordinate 
+
+        if newAngle < 0:
+            newAngle = newAngle + 360
+
         rotationImage = Image.open(self.droneIcon)
         rotationImage = rotationImage.convert('RGBA')
-        rotationImage = rotationImage.rotate(angle=hdeg)
+        rotationImage = rotationImage.rotate(angle=hdg-self.start_coordinate)
         rotationImage = rotationImage.resize((48,48))
-        fileName = './static/icons/cache/temp_rotation.png'
+        fileName = './static/icons/cache/temp_rotation_'+str(int(hdg))+'_.png'
         rotationImage.save(fileName, format='PNG', optimize=True, quality=90)
         self.last.source = fileName
         self.penultimate.source = fileName
