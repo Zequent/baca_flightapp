@@ -82,6 +82,12 @@ class ZequentMapView(MapView):
 
     @mainthread
     def update_marker(self, hdg):
+        
+        hdg = int(hdg)
+
+        if hdg % 2 == 1:
+            return
+
         fileName = './static/icons/cache/temp_rotation_'+str(int(hdg))+'_.png'
         #Change rotation of image !!! WORKS NOT CLOCKWISE !!!
         newAngle = hdg*-1
