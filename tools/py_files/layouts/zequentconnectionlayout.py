@@ -39,7 +39,7 @@ class ZequentConnectionLayout(ZequentGridLayout):
                 lteAddress=self.ids.lte_address
                 lteAddress=str(lteAddress.text)
                 if lteAddress is None or lteAddress is "":
-                    ZequentToast().zequentToast(self.app.root.ids.translator.translate('lte_address_input_invalid'))
+                    ZequentToast.showInfoMessage(self.app.root.ids.translator.translate('lte_address_input_invalid'))
                     return 
                 else:
                     print("LTE adress:"+ lteAddress)
@@ -62,7 +62,14 @@ class ZequentConnectionLayout(ZequentGridLayout):
                 drone = ArduPlaneObject("TestVtol","testuuid", "OrgId", "TestModel", ConnectionType.UDPIN, "127.0.0.1",
                                         "14550", None)
                 self.app.set_drone_instance(drone)
-                self.app.drone.connect()
+                try:
+                    self.app.drone.connect()
+                except TimeoutError as error :
+                    message = self.app.root.ids.translator.translate(error)
+                    ZequentToast.showInfoMessage(message)
+                
+                
+
                 self.app.set_vehicle_type(str(self.ids.vehicle_item.current_item))
                 
                 Clock.schedule_once(partial(self.app.changeScreen, 'main'), 3)

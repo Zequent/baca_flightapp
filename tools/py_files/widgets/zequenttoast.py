@@ -8,7 +8,18 @@ class ZequentToast(Widget):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.zequentToast = toast
     
+    @staticmethod
+    def showInfoMessage(message):
+        toast(message)
+
+    @staticmethod
+    def showErrorMessage(message):
+        toast(message)
+
+    @staticmethod
+    def showSuccessMessage(message):
+        toast(message)
+
     def build(self):
         pass

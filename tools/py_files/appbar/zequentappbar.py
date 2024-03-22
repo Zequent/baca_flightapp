@@ -134,7 +134,7 @@ class ZequentAppBar(MDTopAppBar):
         print("Command Execuiton finished")
         if hasattr(self.mavResult, 'details'):
             print(self.mavResult.details)
-            ZequentToast().zequentToast(self.mavResult.details)
+            ZequentToast.showInfoMessage(self.mavResult.details)
        
 
 
