@@ -13,6 +13,8 @@ from kivy.clock import mainthread
 currentGeocoder = geocoder.ip('me')
 from kivymd.app import MDApp
 
+import cv2  # importing cv 
+import imutils 
 
 class ZequentMapView(MapView):
     latitude = NumericProperty(47.28692205219049)
@@ -20,8 +22,8 @@ class ZequentMapView(MapView):
 
     home_pos_lat = 0
     home_pos_lon = 0
-
-    start_coordinate = None
+    
+    tempRoatationMarkerArray = [] 
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -74,24 +76,21 @@ class ZequentMapView(MapView):
 
     @mainthread
     def update_marker(self, hdg):
-        print(hdg)
-        if self.start_coordinate is None:
-            self.start_coordinate = hdg
-
-        newAngle = hdg-self.start_coordinate 
-
-        if newAngle < 0:
-            newAngle = newAngle + 360
-
-        rotationImage = Image.open(self.droneIcon)
-        rotationImage = rotationImage.convert('RGBA')
-        rotationImage = rotationImage.rotate(angle=hdg-self.start_coordinate)
-        rotationImage = rotationImage.resize((48,48))
         fileName = './static/icons/cache/temp_rotation_'+str(int(hdg))+'_.png'
-        rotationImage.save(fileName, format='PNG', optimize=True, quality=90)
-        self.last.source = fileName
-        self.penultimate.source = fileName
+        #Change rotation of image !!! WORKS NOT CLOCKWISE !!!
+        newAngle = hdg*-1
+        image = cv2.imread(self.droneIcon, cv2.IMREAD_UNCHANGED) 
+        Rotated_image = imutils.rotate(image, angle=newAngle) 
+        cv2.imwrite(fileName, Rotated_image) 
+
+        #CHANGE ICONS
         self.marker.source = fileName
+
+        if len(self.tempRoatationMarkerArray) <= 2 :
+            self.tempRoatationMarkerArray.append(fileName)
+        else:
+            self.last.source = self.tempRoatationMarkerArray.pop(0)
+            self.penultimate.source = self.tempRoatationMarkerArray.pop(0)
         
 
     def setSatelitteMode(self):

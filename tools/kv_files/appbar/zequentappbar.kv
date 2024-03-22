@@ -1,7 +1,7 @@
-#:import Utils tools.Utils 
+#:import Utils tools.Utils.Utils
 <ZequentAppBar>:
     id: topAppBar
     title: app.navBarTitle
-    md_bg_color: app.customColors["first"]
+    md_bg_color: app.customColors["grey"]
     left_action_items: [["menu" , lambda x: app.root.ids.nav_drawer.set_state("open")]] if app.connected else ''
-    right_action_items: [["./static/icons/language_selection.png", lambda x: root.open_language_dropdown(self)]] if not app.connected else [["./static/icons/drone_icon.png", lambda x: root.open_special_commands(self)]]
+    right_action_items: [["./static/icons/language_selection.png", lambda x: root.open_language_dropdown(self)]] if not app.connected else [[ Utils.get_drone_icon_appbar(app.get_vehicle_type()), lambda x: root.open_special_commands(self)]]

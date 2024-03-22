@@ -9,5 +9,7 @@
 
     "main": "Hauptmenü",
     "connection": "Verbindung",
-    "lte_address_input_invalid": "Bitte LTE Adresse richtig eingeben!"
+    "lte_address_input_invalid": "Bitte LTE Adresse richtig eingeben!",
+
+    "drone.command.takeoff": "Takeoff"
 }

@@ -70,4 +70,11 @@ class Utils:
         elif droneType.lower() == 'copter':
             return "./static/icons/drone/copter.png"
         
+    @staticmethod
+    def get_drone_icon_appbar(droneType):
+        if droneType.lower() == 'vtol':
+            return "./static/icons/drone/vtol_white.png"
+        elif droneType.lower() == 'copter':
+            return "./static/icons/drone/copter_white.png"
+        
 

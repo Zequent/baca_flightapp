@@ -107,13 +107,14 @@ class ZequentAppBar(MDTopAppBar):
         currSpecialCommandDropDownItem = {
             "text": 'Arm Vehicle',
             "font_size": self.app.fontSizes['primary'],
-            "on_release": lambda command='Arm Vehicle': self.execute_special_command(self.drone.arm),
+            "on_release": lambda command='Arm Vehicle': self.execute_special_command('self.drone.arm()'),
         }
         currSpecialCommandDropDownItem2 = {
             "text": 'Take-Off (Default)',
             "font_size": self.app.fontSizes['primary'],
-            "on_release": lambda command='Takeoff': self.execute_special_command(self.drone.takeoff),
+            "on_release": lambda command='Takeoff': self.execute_special_command('self.drone.takeoff()'),
         }
+
         availableSpecialCommands.append(currSpecialCommandDropDownItem)
         availableSpecialCommands.append(currSpecialCommandDropDownItem2)
         return availableSpecialCommands
@@ -138,4 +139,4 @@ class ZequentAppBar(MDTopAppBar):
 
 
     def execute_special_command_worker(self, method):
-        self.mavResult =  method()
+        self.mavResult =  exec(method)

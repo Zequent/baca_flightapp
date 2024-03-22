@@ -29,7 +29,7 @@ class MainControllerLayout(ZequentBoxLayout):
             response = self.drone.get_position()
             lat = response.lat * 0.0000001
             lon = response.lon * 0.0000001
-            hdg = response.hdg * (360.0 / 65535.0)
+            hdg = response.hdg / 100
             mapview: ZequentMapView = self.ids.camera_layout.ids.mapview 
             mapview.change_pos_marker(lat, lon, hdg)
            
