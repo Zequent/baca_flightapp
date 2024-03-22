@@ -40,18 +40,17 @@ class ZequentMapView(MapView):
         self.last.opacity = .2
 
         #Home Pos marker
-        #response = self.drone.get_home_pos()
-        #home_pos_lat = response.latitude * 0.0000001
-        #home_pos_lon = response.longitude * 0.0000001
+        response = self.drone.get_home_position()
+        home_pos_lat = response.latitude * 0.0000001
+        home_pos_lon = response.longitude * 0.0000001
 
-        #self.home_pos_marker = MapMarker(lat = home_pos_lat, lon =home_pos_lon)
-        #self.home_pos_marker.source = './static/icons/baseline_home_white_24dp.png'
+        self.home_pos_marker = MapMarker(lat = home_pos_lat, lon =home_pos_lon)
+        self.home_pos_marker.source = './static/icons/baseline_home_white_24dp.png'
 
         self.add_marker(marker=self.marker)
         self.add_marker(marker=self.penultimate)
         self.add_marker(marker=self.last)
-        #self.add_marker(marker=self.home_pos_marker)
-        self.drone: ArduPlaneObject = self.app.drone
+        self.add_marker(marker=self.home_pos_marker)
        
         print(str(self.lat) + " " + str(self.lon))
         
@@ -59,8 +58,8 @@ class ZequentMapView(MapView):
         self.center_on(self.latitude, self.longitude)
         # self.updateMap()
 
-    def change_pos_marker(self, templat, templon):
-        threading.Thread(target=self.update_marker).start()
+    def change_pos_marker(self, templat, templon, hdg):
+        threading.Thread(target=self.update_marker, args=[hdg]).start()
         self.last.lat = self.penultimate.lat
         self.last.lon = self.penultimate.lon
         
@@ -72,10 +71,11 @@ class ZequentMapView(MapView):
         self.center_on(templat, templon)
 
     @mainthread
-    def update_marker(self):
+    def update_marker(self, hdeg):
+        print(hdeg)
         rotationImage = Image.open(self.droneIcon)
         rotationImage = rotationImage.convert('RGBA')
-        rotationImage = rotationImage.rotate(angle=-60)
+        rotationImage = rotationImage.rotate(angle=hdeg)
         rotationImage = rotationImage.resize((48,48))
         fileName = './static/icons/cache/temp_rotation.png'
         rotationImage.save(fileName, format='PNG', optimize=True, quality=90)
