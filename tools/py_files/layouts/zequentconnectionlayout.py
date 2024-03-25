@@ -8,7 +8,8 @@ from tools.Utils import *
 from tools.py_files.widgets.zequentdropdownitem import ZequentDropDownItem
 from tools.py_files.widgets.zequenttoast import *
 from zequentmavlinklib.ArduPlane import ArduPlaneObject
-from zequentmavlinklib.Globals import ConnectionType
+from zequentmavlinklib.Globals import ConnectionType, ErrorMessage
+from pymavlink.dialects.v20.common import MAVLink_heartbeat_message
 from logging import getLogger
 
 
@@ -29,12 +30,7 @@ class ZequentConnectionLayout(ZequentGridLayout):
         pass
     
     def tryConnection(self,button, connectionType, currStateLabel):
-            ###TODO: Define connect function with api###
-            import random
             self.app= MDApp.get_running_app()
-            randInt = random.randint(0,1)
-    
-
             if self.ids.rfc_button.disabled == False:
                 self.app.log.info("RFC")
             elif self.ids.lte_button.disabled == False:
@@ -50,29 +46,21 @@ class ZequentConnectionLayout(ZequentGridLayout):
 
                     log.info(lteAddress)
 
+                self.drone = ArduPlaneObject("TestVtol","testuuid", "OrgId", "TestModel", ConnectionType.UDPIN, "127.0.0.1",
+                                        "14550", None)
+                connection_response = self.drone.connect()
             #TODO hier noch ein check einbauen - richtig Connected oder nicht (Simulator bei @Mina aufsetzen!!)
-            if randInt == 0:
+            if isinstance(connection_response, ErrorMessage):
+                connection_response : ErrorMessage
                 currStateLabel.text = self.app.root.ids.translator.translate('failed_message')
                 currStateLabel.color = self.app.customColors["failure"]
+                ZequentToast.showErrorMessage(connection_response.message)
             else:
+                connection_response: MAVLink_heartbeat_message
+                self.app.set_drone_instance(self.drone)
                 button.disabled = True
                 currStateLabel.text = self.app.root.ids.translator.translate('success_message')
                 currStateLabel.color = self.app.customColors["success"]
-                
-                log.info(connectionType)
-
-                drone = ArduPlaneObject("TestVtol","testuuid", "OrgId", "TestModel", ConnectionType.UDPIN, "127.0.0.1",
-                                        "14550", None)
-                self.app.set_drone_instance(drone)
-                try:
-                    self.app.drone.connect()
-                except TimeoutError as error :
-                    message = self.app.root.ids.translator.translate(error)
-                    ZequentToast.showInfoMessage(message)
-                
-                
-
                 self.app.set_vehicle_type(str(self.ids.vehicle_item.current_item))
-                
                 Clock.schedule_once(partial(self.app.changeScreen, 'main'), 3)
                 log.info("OK")
