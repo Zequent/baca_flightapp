@@ -8,7 +8,7 @@ from tools.Utils import *
 from tools.py_files.widgets.zequentdropdownitem import ZequentDropDownItem
 from tools.py_files.widgets.zequenttoast import *
 from zequentmavlinklib.ArduPlane import ArduPlaneObject
-from zequentmavlinklib.Globals import ConnectionType, ErrorMessage
+from zequentmavlinklib.Globals import ConnectionType, ErrorMessage, WorkerThread
 from pymavlink.dialects.v20.common import MAVLink_heartbeat_message
 from logging import getLogger
 
@@ -28,6 +28,9 @@ class ZequentConnectionLayout(ZequentGridLayout):
     
     def build(self):
         pass
+
+    def execute_connect(self):
+        return self.drone.connect()
     
     def tryConnection(self,button, connectionType, currStateLabel):
             self.app= MDApp.get_running_app()
@@ -48,15 +51,17 @@ class ZequentConnectionLayout(ZequentGridLayout):
 
                 self.drone = ArduPlaneObject("TestVtol","testuuid", "OrgId", "TestModel", ConnectionType.UDPIN, "127.0.0.1",
                                         "14550", None)
-                connection_response = self.drone.connect()
-            #TODO hier noch ein check einbauen - richtig Connected oder nicht (Simulator bei @Mina aufsetzen!!)
-            if isinstance(connection_response, ErrorMessage):
-                connection_response : ErrorMessage
+                connectThread = self.drone.connect()
+                print("---------------------------------------------------------")
+                print(connectThread)
+
+            if isinstance(connectThread.response, ErrorMessage) or connectThread.response is None:
+                connectThread.response : ErrorMessage
                 currStateLabel.text = self.app.root.ids.translator.translate('failed_message')
                 currStateLabel.color = self.app.customColors["failure"]
-                ZequentToast.showErrorMessage(connection_response.message)
+                ZequentToast.showErrorMessage(connectThread.response.message)
             else:
-                connection_response: MAVLink_heartbeat_message
+                connectThread.response: MAVLink_heartbeat_message
                 self.app.set_drone_instance(self.drone)
                 button.disabled = True
                 currStateLabel.text = self.app.root.ids.translator.translate('success_message')
