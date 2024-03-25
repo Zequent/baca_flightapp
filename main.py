@@ -64,6 +64,8 @@ def importKV_FILES():
             if not currDirName.__contains__("screens"):
                 Builder.load_file(os.path.join(currDirName, filename)) 
 
+log = getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 class ZequentMavLinkApp(MDApp):
 
     latitude = NumericProperty(48)
@@ -140,7 +142,7 @@ class ZequentMavLinkApp(MDApp):
                 self.latitude, self.longitude = currentGeocoder.latlng
                 Clock.schedule_interval(self.updateLocation,1)
             except TypeError:
-                print('Error on geolocation')
+                log.info('Error on geolocation')
             toast("GPS only configured for Android")'''
         
 
@@ -150,7 +152,8 @@ class ZequentMavLinkApp(MDApp):
             try:
                 self.latitude, self.longitude = currentGeocoder.latlng
             except TypeError:
-                print('Error on geolocation')
+
+                log.info('Error on geolocation')
         else:
             gps.configure(on_location=self.on_gps_location)   
              
@@ -175,8 +178,9 @@ class ZequentMavLinkApp(MDApp):
         toast("Latitude "+self.latitude)
         toast("Longitude "+self.longitude)
         if self.latitude is not None:
-            print("{:.6f}".format(self.latitude))
-            print("{:.6f}".format(self.longitude))
+            log.info("{:.6f}".format(self.latitude))
+            log.info("{:.6f}".format(self.longitude))
+            return
 
     def set_drone_instance(self, drone):
         self.drone = drone

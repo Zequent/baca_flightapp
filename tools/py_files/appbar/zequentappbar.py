@@ -15,6 +15,10 @@ from zequentmavlinklib.ArduPlane import ArduPlaneObject, MavResult
 
 from tools.py_files.widgets.zequentmapview import ZequentMapView
 from tools.py_files.widgets.zequenttoast import ZequentToast
+import logging
+from logging import getLogger
+log = getLogger(__name__)
+logging.basicConfig(level=logging.INFO)  
 
 
 class ZequentAppBar(MDTopAppBar):
@@ -119,24 +123,12 @@ class ZequentAppBar(MDTopAppBar):
         availableSpecialCommands.append(currSpecialCommandDropDownItem2)
         return availableSpecialCommands
         
-        
-    def test(self,command):
-        sm: ZequentRootScreenManager = self.app.root.ids.sm
-        mapview: ZequentMapView = sm.current_screen.ids.main_controller_layout.ids.camera_layout.ids.mapview
-        randInt = random.uniform(0,.0000200)
-    
-        print(mapview.change_pos_marker(0.0000008,randInt))
 
     def execute_special_command(self, method):
-        thread = threading.Thread(target= lambda: self.execute_special_command_worker(method))
-        thread.start()
-        thread.join()
-        print("Command Execuiton finished")
+        self.execute_special_command_worker(method)
         if hasattr(self.mavResult, 'details'):
-            print(self.mavResult.details)
+            log.info(self.mavResult.details)
             ZequentToast.showInfoMessage(self.mavResult.details)
-       
-
 
     def execute_special_command_worker(self, method):
         self.mavResult =  exec(method)

@@ -46,7 +46,7 @@ class Translator(Widget):
         if loc in self.data:
             self.locale = loc
         else:
-            print('Invalid locale')
+            log.info('Invalid locale')
 
     def get_locale(self):
         return self.locale
@@ -55,7 +55,7 @@ class Translator(Widget):
         try:
             self.plural_rule = PluralRule(rule)
         except Exception:
-            print('Invalid plural rule')
+            log.info('Invalid plural rule')
 
     def get_plural_rule(self):
         return self.plural_rule
@@ -73,7 +73,7 @@ class Translator(Widget):
             try:
                 count = int(count)
             except Exception:
-                print('Invalid count')
+                log.info('Invalid count')
                 return key
             text = text.get(self.plural_rule(count), key)
         return Template(text).safe_substitute(**kwargs)

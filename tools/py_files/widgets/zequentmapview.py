@@ -1,23 +1,21 @@
 import threading
-import time
 from kivy_garden.mapview import MapView, MapMarker, MapSource, MapMarkerPopup
 import geocoder
 from zequentmavlinklib.ArduPlane import ArduPlaneObject
 from kivy.properties import NumericProperty
-from kivymd.icon_definitions import md_icons
 from tools.Utils import Utils
-from PIL import Image
-from kivy.clock import Clock
-from functools import partial
 from kivy.clock import mainthread
 from kivy.metrics import dp
 from tools.py_files.widgets.zequentbutton import ZequentButton
 currentGeocoder = geocoder.ip('me')
 from kivymd.app import MDApp
+from logging import getLogger
+import logging
 
 import cv2  # importing cv 
 import imutils 
-
+log = getLogger(__name__)
+logging.basicConfig(level=logging.INFO)  
 class ZequentMapView(MapView):
     latitude = NumericProperty(47.28692205219049)
     longitude = NumericProperty(11.147142586915848)
@@ -62,7 +60,7 @@ class ZequentMapView(MapView):
         self.add_marker(marker=self.last)
         self.add_marker(marker=self.home_pos_marker)
 
-        print(str(self.lat) + " " + str(self.lon))
+        log.info(str(self.lat) + " " + str(self.lon))
         
 
         self.center_on(self.latitude, self.longitude)

@@ -7,14 +7,16 @@ from kivymd.app import MDApp
 from tools.Utils import *
 from tools.py_files.widgets.zequentdropdownitem import ZequentDropDownItem
 from tools.py_files.widgets.zequenttoast import *
-from zequentmavlinklib.ArduPlane import ArduPlaneObject, ConnectionType
+from zequentmavlinklib.ArduPlane import ArduPlaneObject
+from zequentmavlinklib.Globals import ConnectionType
+from logging import getLogger
 
 
+log = getLogger(__name__)
+logging.basicConfig(level=logging.INFO)  
 
 class ZequentConnectionLayout(ZequentGridLayout):
-    
     connectionStatusText = ''
-
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -34,7 +36,7 @@ class ZequentConnectionLayout(ZequentGridLayout):
     
 
             if self.ids.rfc_button.disabled == False:
-                print("RFC")
+                self.app.log.info("RFC")
             elif self.ids.lte_button.disabled == False:
                 lteAddress=self.ids.lte_address
                 lteAddress=str(lteAddress.text)
@@ -42,11 +44,11 @@ class ZequentConnectionLayout(ZequentGridLayout):
                     ZequentToast.showInfoMessage(self.app.root.ids.translator.translate('lte_address_input_invalid'))
                     return 
                 else:
-                    print("LTE adress:"+ lteAddress)
+                    log.info("LTE adress:"+ lteAddress)
                     connectionType: ZequentDropDownItem = self.ids.lte_connection_type 
-                    print(connectionType.current_item)
+                    log.info(connectionType.current_item)
 
-                    print(lteAddress)
+                    log.info(lteAddress)
 
             #TODO hier noch ein check einbauen - richtig Connected oder nicht (Simulator bei @Mina aufsetzen!!)
             if randInt == 0:
@@ -57,7 +59,7 @@ class ZequentConnectionLayout(ZequentGridLayout):
                 currStateLabel.text = self.app.root.ids.translator.translate('success_message')
                 currStateLabel.color = self.app.customColors["success"]
                 
-                print(connectionType)
+                log.info(connectionType)
 
                 drone = ArduPlaneObject("TestVtol","testuuid", "OrgId", "TestModel", ConnectionType.UDPIN, "127.0.0.1",
                                         "14550", None)
@@ -73,4 +75,4 @@ class ZequentConnectionLayout(ZequentGridLayout):
                 self.app.set_vehicle_type(str(self.ids.vehicle_item.current_item))
                 
                 Clock.schedule_once(partial(self.app.changeScreen, 'main'), 3)
-                print("OK")
+                log.info("OK")

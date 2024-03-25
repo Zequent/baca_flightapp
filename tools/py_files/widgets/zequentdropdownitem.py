@@ -1,6 +1,6 @@
 from kivymd.uix.dropdownitem.dropdownitem import MDDropDownItem
-from zequentmavlinklib.ArduPlane import VehicleTypes
-from zequentmavlinklib.ArduPlane import ConnectionType
+from zequentmavlinklib.Globals import VehicleTypes
+from zequentmavlinklib.Globals import ConnectionType
 from tools.py_files.widgets.zequentdropdownmenu import *
 from kivymd.app import MDApp
 
