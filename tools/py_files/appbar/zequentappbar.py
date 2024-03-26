@@ -110,8 +110,6 @@ class ZequentAppBar(MDTopAppBar):
 
         actionObjectList = self.drone.get_basic_commands()
 
-
-    
         for action in actionObjectList:
             currSpecialCommandDropDownItem = {
             "text": action.key,

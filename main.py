@@ -66,7 +66,7 @@ def importKV_FILES():
                 Builder.load_file(os.path.join(currDirName, filename)) 
 
 log = getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 class ZequentMavLinkApp(MDApp):
 
     latitude = NumericProperty(48)

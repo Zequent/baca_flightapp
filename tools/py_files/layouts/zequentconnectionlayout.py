@@ -20,7 +20,7 @@ from kivy.clock import mainthread
 import weakref
 
 log = getLogger(__name__)
-logging.basicConfig(level=logging.INFO)  
+logging.basicConfig(level=logging.DEBUG)  
 
 class ZequentConnectionLayout(ZequentGridLayout):
     connectionStatusText = ''
@@ -64,8 +64,6 @@ class ZequentConnectionLayout(ZequentGridLayout):
             self.drone = ArduPlaneObject("TestVtol","testuuid", "OrgId", "TestModel", ConnectionType.UDPIN, "127.0.0.1",
                                     "14550", None)
             connectThread = self.drone.connect()
-            print("---------------------------------------------------------")
-            print(connectThread)
 
         if isinstance(connectThread, ErrorMessage):
             GraphicalChangeExecutor.execute(self.remove_spinner)
@@ -82,8 +80,6 @@ class ZequentConnectionLayout(ZequentGridLayout):
             currStateLabel.color = self.app.customColors["success"]
             self.app.set_vehicle_type(str(self.ids.vehicle_item.current_item))
             Clock.schedule_once(partial(self.app.changeScreen, 'main'), 3)
-            log.info("OK")
-   
 
     def add_spinner(self,button):
         connection_grid: ZequentGridLayout = self.ids.connection_grid
@@ -95,8 +91,9 @@ class ZequentConnectionLayout(ZequentGridLayout):
         self.ids['anchor_layout_spinner'] = weakref.ref(anchorLayout)
         self.disable_widgets()
 
-        threading.Thread(target=self.tryConnection).start()
-        
+        thread = WorkerThread(method=self.tryConnection, name="Connecting to Vehicle")
+        thread.start()
+        thread.join()
     def remove_spinner(self):
         self.ids.connection_grid.remove_widget(self.ids.anchor_layout_spinner)
 

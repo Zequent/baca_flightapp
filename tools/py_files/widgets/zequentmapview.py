@@ -2,6 +2,7 @@ import threading
 from kivy_garden.mapview import MapView, MapMarker, MapSource, MapMarkerPopup
 import geocoder
 from zequentmavlinklib.ArduPlane import ArduPlaneObject
+from zequentmavlinklib.Globals import WorkerThread
 from kivy.properties import NumericProperty
 from tools.Utils import Utils
 from kivy.clock import mainthread
@@ -15,7 +16,7 @@ import logging
 import cv2  # importing cv 
 import imutils 
 log = getLogger(__name__)
-logging.basicConfig(level=logging.INFO)  
+logging.basicConfig(level=logging.DEBUG)  
 class ZequentMapView(MapView):
     latitude = NumericProperty(47.28692205219049)
     longitude = NumericProperty(11.147142586915848)

@@ -5,6 +5,7 @@ from tools.py_files.layouts.casuals.zequentboxlayout import *
 from tools.Utils import *
 from kivymd.app import MDApp
 from zequentmavlinklib.ArduPlane import ArduPlaneObject
+from zequentmavlinklib.Globals import WorkerThread
 import threading
 from tools.Utils import *
 from tools.py_files.widgets.zequentmapview import ZequentMapView
@@ -18,7 +19,8 @@ class MainControllerLayout(ZequentBoxLayout):
         self.app.connected = True
         self.drone: ArduPlaneObject =self.app.drone
         if self.drone is not None:
-            threading.Thread(target=lambda: Utils.every(0.1, self.get_current_pos_from_drone)).start()
+            thread = threading.Thread(target=lambda: Utils.every(0.1, self.get_current_pos_from_drone))
+            thread.start()
 
     def build(self):
         pass
