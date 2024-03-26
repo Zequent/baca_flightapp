@@ -8,3 +8,4 @@ eeprom.bin
 terrain/
 mav.tlog
 mav.tlog.raw
+logs/
