@@ -16,14 +16,14 @@ from tools.py_files.widgets.zequentmapview import ZequentMapView
 from tools.py_files.widgets.zequenttoast import ZequentToast
 import logging
 from logging import getLogger
+
 log = getLogger(__name__)
-logging.basicConfig(level=logging.INFO)  
+logging.basicConfig(level=logging.INFO)
 
 
 class ZequentAppBar(MDTopAppBar):
-
     translator = None
-  
+
     submitDialog = None
     languageDropdown = None
 
@@ -34,14 +34,14 @@ class ZequentAppBar(MDTopAppBar):
 
     def build(self):
         pass
-    
+
     def open_language_dropdown(self, item):
         self.languageDropdown = ZequentDropDownMenu(caller=item, items=self.getLanguageDropDownItems())
-        self.languageDropdown.pos_hint = {'center_x':.5,'center_y':.5}
+        self.languageDropdown.pos_hint = {'center_x': .5, 'center_y': .5}
         self.languageDropdown.open()
 
     def getLanguageDropDownItems(self):
-        self.app= MDApp.get_running_app()
+        self.app = MDApp.get_running_app()
         from os import walk
 
         availableLanguages = []
@@ -57,30 +57,29 @@ class ZequentAppBar(MDTopAppBar):
                 "on_release": lambda language=filename: self.show_alert_dialog(language),
             }
             availableLanguages.append(currLanguageDropDownItem)
-        
+
         return availableLanguages
-    
+
     def show_alert_dialog(self, language):
         self.translator = self.app.root.ids.translator
         cancelButton = ZequentFlatButton()
         cancelButton.text = self.translator.translate("cancel")
-        cancelButton.bind(on_press=self.hide_alert_dialog) 
+        cancelButton.bind(on_press=self.hide_alert_dialog)
         submitButton = ZequentFlatButton()
-        submitButton.text=self.translator.translate("submit")
-        submitButton.bind(on_press=partial(self.setLanguage,language))
+        submitButton.text = self.translator.translate("submit")
+        submitButton.bind(on_press=partial(self.setLanguage, language))
         self.submitDialog = ZequentDialog(
-                buttons=[
-                    cancelButton,
-                    submitButton
-                ]
-            )
+            buttons=[
+                cancelButton,
+                submitButton
+            ]
+        )
         self.submitDialog.text = self.translator.translate('restart_text')
         self.submitDialog.open()
 
     def setLanguage(self, *args):
         self.translator.set_locale(args[0])
         self.saveInSettings(args[0])
-    
 
     def saveInSettings(self, language):
         with open(Utils.getSettingsFile()) as infile:
@@ -95,16 +94,15 @@ class ZequentAppBar(MDTopAppBar):
         self.submitDialog.dismiss()
 
     def open_special_commands(self, item):
-        self.app= MDApp.get_running_app()
+        self.app = MDApp.get_running_app()
         self.specialCommandsDropdown = ZequentDropDownMenu(caller=item, items=self.getSpecialCommandsDropDownItems())
-        self.specialCommandsDropdown.pos_hint = {'right':1,'top':1}
+        self.specialCommandsDropdown.pos_hint = {'right': 1, 'top': 1}
         self.specialCommandsDropdown.open()
 
-
-    #TODO sabri! Commands in List
+    # TODO sabri! Commands in List
 
     def getSpecialCommandsDropDownItems(self):
-        self.app=MDApp.get_running_app()
+        self.app = MDApp.get_running_app()
         self.drone: ArduPlaneObject = self.app.drone
         availableSpecialCommands = []
 
@@ -112,19 +110,24 @@ class ZequentAppBar(MDTopAppBar):
 
         for action in actionObjectList:
             currSpecialCommandDropDownItem = {
-            "text": action.key,
-            "font_size": self.app.fontSizes['primary'],
-            "on_release": lambda command=action.command: self.execute_special_command('self.drone.'+command),
+                "text": action.key,
+                "font_size": self.app.fontSizes['primary'],
+                "on_release": lambda command=action.command: self.execute_special_command(command),
             }
             availableSpecialCommands.append(currSpecialCommandDropDownItem)
         return availableSpecialCommands
-        
 
     def execute_special_command(self, method):
         self.execute_special_command_worker(method)
         if hasattr(self.mavResult, 'details'):
-            #log.info(self.mavResult.details)
+            # log.info(self.mavResult.details)
             ZequentToast.showInfoMessage(self.mavResult.details)
 
-    def execute_special_command_worker(self, method):
-        exec(method)
+    def execute_special_command_worker(self, method, *args):
+        command = getattr(ArduPlaneObject, method)
+        if args is not None:
+            self.mavResult = command(self.drone, *args)
+            print(self.mavResult)
+        else:
+            self.mavResult = command(self.drone)
+            print(self.mavResult)
