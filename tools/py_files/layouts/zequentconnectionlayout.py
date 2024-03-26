@@ -55,13 +55,13 @@ class ZequentConnectionLayout(ZequentGridLayout):
                 print("---------------------------------------------------------")
                 print(connectThread)
 
-            if isinstance(connectThread.response, ErrorMessage) or connectThread.response is None:
-                connectThread.response : ErrorMessage
+            if isinstance(connectThread, ErrorMessage):
+                connectThread : ErrorMessage
                 currStateLabel.text = self.app.root.ids.translator.translate('failed_message')
                 currStateLabel.color = self.app.customColors["failure"]
-                ZequentToast.showErrorMessage(connectThread.response.message)
+                ZequentToast.showErrorMessage(connectThread.message)
             else:
-                connectThread.response: MAVLink_heartbeat_message
+                connectThread: MAVLink_heartbeat_message
                 self.app.set_drone_instance(self.drone)
                 button.disabled = True
                 currStateLabel.text = self.app.root.ids.translator.translate('success_message')
