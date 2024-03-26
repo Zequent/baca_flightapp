@@ -153,8 +153,8 @@ class ZequentMavLinkApp(MDApp):
             try:
                 self.latitude, self.longitude = currentGeocoder.latlng
             except TypeError:
-
-                log.info('Error on geolocation')
+                return
+                #log.info('Error on geolocation')
         else:
             gps.configure(on_location=self.on_gps_location)   
              
@@ -179,8 +179,8 @@ class ZequentMavLinkApp(MDApp):
         toast("Latitude "+self.latitude)
         toast("Longitude "+self.longitude)
         if self.latitude is not None:
-            log.info("{:.6f}".format(self.latitude))
-            log.info("{:.6f}".format(self.longitude))
+            #log.info("{:.6f}".format(self.latitude))
+            #log.info("{:.6f}".format(self.longitude))
             return
 
     def set_drone_instance(self, drone):

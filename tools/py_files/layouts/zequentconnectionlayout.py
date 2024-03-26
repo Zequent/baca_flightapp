@@ -20,7 +20,8 @@ from kivy.clock import mainthread
 import weakref
 
 log = getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)  
+logging.basicConfig(level=logging.DEBUG)
+
 
 class ZequentConnectionLayout(ZequentGridLayout):
     connectionStatusText = ''
@@ -30,50 +31,46 @@ class ZequentConnectionLayout(ZequentGridLayout):
         self.app = MDApp.get_running_app()
         if self.app.root is not None:
             self.connectionStatusText = self.app.root.ids.translator.translate('not_connected')
-         
-    
+
     def build(self):
         pass
 
     def execute_connect(self):
         return self.drone.connect()
-    
-    
+
     def tryConnection(self, *args):
-        
+
         button: ZequentButton = self.ids.connect_button
         connectionType: ZequentGridLayout = self.ids.connection_type
         currStateLabel: ZequentLabel = self.ids.connection_status_label
 
-        self.app= MDApp.get_running_app()
+        self.app = MDApp.get_running_app()
         if self.ids.rfc_button.disabled == False:
             self.app.log.info("RFC")
         elif self.ids.lte_button.disabled == False:
-            lteAddress=self.ids.lte_address
-            lteAddress=str(lteAddress.text)
+            lteAddress = self.ids.lte_address
+            lteAddress = str(lteAddress.text)
             if lteAddress is None or lteAddress is "":
                 ZequentToast.showInfoMessage(self.app.root.ids.translator.translate('lte_address_input_invalid'))
-                return 
+                return
             else:
-                log.info("LTE adress:"+ lteAddress)
-                connectionType: ZequentDropDownItem = self.ids.lte_connection_type 
-                log.info(connectionType.current_item)
+                # log.info("LTE adress:"+ lteAddress)
+                connectionType: ZequentDropDownItem = self.ids.lte_connection_type
+                # log.info(connectionType.current_item)
+                # log.info(lteAddress)
+                self.drone = ArduPlaneObject("TestVtol", "testuuid", "OrgId", "TestModel",
+                                             ConnectionType.UDPIN, "192.168.1.25", "14550", None)
+                connectionResponse = self.drone.connect()
 
-                log.info(lteAddress)
-
-            self.drone = ArduPlaneObject("TestVtol","testuuid", "OrgId", "TestModel", ConnectionType.UDPIN, "127.0.0.1",
-                                    "14550", None)
-            connectThread = self.drone.connect()
-
-        if isinstance(connectThread, ErrorMessage):
+        if isinstance(connectionResponse, ErrorMessage):
             GraphicalChangeExecutor.execute(self.remove_spinner)
-            connectThread : ErrorMessage
+            connectionResponse: ErrorMessage
             currStateLabel.text = self.app.root.ids.translator.translate('failed_message')
             currStateLabel.color = self.app.customColors["failure"]
-            ZequentToast.showErrorMessage(connectThread.message)
+            ZequentToast.showErrorMessage(connectionResponse.message)
             GraphicalChangeExecutor.execute(self.enable_widgets)
         else:
-            connectThread: MAVLink_heartbeat_message
+            connectionResponse: MAVLink_heartbeat_message
             self.app.set_drone_instance(self.drone)
             button.disabled = True
             currStateLabel.text = self.app.root.ids.translator.translate('success_message')
@@ -81,7 +78,7 @@ class ZequentConnectionLayout(ZequentGridLayout):
             self.app.set_vehicle_type(str(self.ids.vehicle_item.current_item))
             Clock.schedule_once(partial(self.app.changeScreen, 'main'), 3)
 
-    def add_spinner(self,button):
+    def add_spinner(self, button):
         connection_grid: ZequentGridLayout = self.ids.connection_grid
         anchorLayout = ZequentAnchorLayout()
         spinner = ZequentSpinner()
@@ -94,9 +91,9 @@ class ZequentConnectionLayout(ZequentGridLayout):
         thread = WorkerThread(method=self.tryConnection, name="Connecting to Vehicle")
         thread.start()
         thread.join()
+
     def remove_spinner(self):
         self.ids.connection_grid.remove_widget(self.ids.anchor_layout_spinner)
-
 
     def disable_widgets(self):
         self.ids.vehicle_item.opacity = 0

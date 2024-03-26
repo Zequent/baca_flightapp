@@ -61,7 +61,7 @@ class ZequentMapView(MapView):
         self.add_marker(marker=self.last)
         self.add_marker(marker=self.home_pos_marker)
 
-        log.info(str(self.lat) + " " + str(self.lon))
+        #log.info(str(self.lat) + " " + str(self.lon))
         
 
         self.center_on(self.latitude, self.longitude)

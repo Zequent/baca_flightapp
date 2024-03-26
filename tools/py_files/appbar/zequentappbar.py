@@ -123,7 +123,7 @@ class ZequentAppBar(MDTopAppBar):
     def execute_special_command(self, method):
         self.execute_special_command_worker(method)
         if hasattr(self.mavResult, 'details'):
-            log.info(self.mavResult.details)
+            #log.info(self.mavResult.details)
             ZequentToast.showInfoMessage(self.mavResult.details)
 
     def execute_special_command_worker(self, method):
