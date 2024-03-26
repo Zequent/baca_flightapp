@@ -1,3 +1,4 @@
+from tools.py_files.core.graphicalchangeexecutor import GraphicalChangeExecutor
 from tools.py_files.layouts.casuals.zequentboxlayout import *
 from tools.py_files.layouts.casuals.zequentanchorlayout import *
 from tools.py_files.layouts.casuals.zequentgridlayout import *
@@ -5,7 +6,7 @@ from kivy.clock import Clock
 from functools import partial
 from kivymd.app import MDApp
 from tools.Utils import *
-from tools.py_files.widgets.mainthreadexecutor import MainThreadExecutor
+
 from tools.py_files.widgets.zequentbutton import ZequentButton
 from tools.py_files.widgets.zequentdropdownitem import ZequentDropDownItem
 from tools.py_files.widgets.zequentlabel import ZequentLabel
@@ -67,12 +68,12 @@ class ZequentConnectionLayout(ZequentGridLayout):
             print(connectThread)
 
         if isinstance(connectThread, ErrorMessage):
-            MainThreadExecutor.execute(self.remove_spinner)
+            GraphicalChangeExecutor.execute(self.remove_spinner)
             connectThread : ErrorMessage
             currStateLabel.text = self.app.root.ids.translator.translate('failed_message')
             currStateLabel.color = self.app.customColors["failure"]
             ZequentToast.showErrorMessage(connectThread.message)
-            MainThreadExecutor.execute(self.enable_widgets)
+            GraphicalChangeExecutor.execute(self.enable_widgets)
         else:
             connectThread: MAVLink_heartbeat_message
             self.app.set_drone_instance(self.drone)
