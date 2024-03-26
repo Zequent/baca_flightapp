@@ -4,3 +4,7 @@ __pycache__/
 venv/
 .idea/
 cache/
+eeprom.bin
+terrain/
+mav.tlog
+mav.tlog.raw
