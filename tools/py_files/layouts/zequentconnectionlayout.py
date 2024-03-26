@@ -5,6 +5,7 @@ from kivy.clock import Clock
 from functools import partial
 from kivymd.app import MDApp
 from tools.Utils import *
+from tools.py_files.widgets.mainthreadexecutor import MainThreadExecutor
 from tools.py_files.widgets.zequentbutton import ZequentButton
 from tools.py_files.widgets.zequentdropdownitem import ZequentDropDownItem
 from tools.py_files.widgets.zequentlabel import ZequentLabel
@@ -66,12 +67,12 @@ class ZequentConnectionLayout(ZequentGridLayout):
             print(connectThread)
 
         if isinstance(connectThread, ErrorMessage):
-            self.remove_spinner()
+            MainThreadExecutor.execute(self.remove_spinner)
             connectThread : ErrorMessage
             currStateLabel.text = self.app.root.ids.translator.translate('failed_message')
             currStateLabel.color = self.app.customColors["failure"]
             ZequentToast.showErrorMessage(connectThread.message)
-            self.enable_widgets()
+            MainThreadExecutor.execute(self.enable_widgets)
         else:
             connectThread: MAVLink_heartbeat_message
             self.app.set_drone_instance(self.drone)
@@ -95,7 +96,6 @@ class ZequentConnectionLayout(ZequentGridLayout):
 
         threading.Thread(target=self.tryConnection).start()
         
-    @mainthread
     def remove_spinner(self):
         self.ids.connection_grid.remove_widget(self.ids.anchor_layout_spinner)
 
@@ -105,7 +105,6 @@ class ZequentConnectionLayout(ZequentGridLayout):
         self.ids.connection_type.opacity = 0
         self.ids.connection_grid.disabled = True
 
-    @mainthread
     def enable_widgets(self):
         self.ids.vehicle_item.opacity = 1
         self.ids.connection_type.opacity = 1
