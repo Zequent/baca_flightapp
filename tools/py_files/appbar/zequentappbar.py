@@ -10,8 +10,7 @@ from tools.py_files.widgets.zequentdialog import *
 from tools.py_files.widgets.zequentflatbutton import *
 from tools.py_files.widgets.zequentbutton import *
 from functools import partial
-from zequentmavlinklib.ArduPlane import ArduPlaneObject, MavResult
-
+from zequentmavlinklib.ArduPlane import ArduPlaneObject, MavResult, list_all_commands
 
 from tools.py_files.widgets.zequentmapview import ZequentMapView
 from tools.py_files.widgets.zequenttoast import ZequentToast
@@ -108,19 +107,18 @@ class ZequentAppBar(MDTopAppBar):
         self.app=MDApp.get_running_app()
         self.drone: ArduPlaneObject = self.app.drone
         availableSpecialCommands = []
-        currSpecialCommandDropDownItem = {
-            "text": 'Arm Vehicle',
-            "font_size": self.app.fontSizes['primary'],
-            "on_release": lambda command='Arm Vehicle': self.execute_special_command('self.drone.arm()'),
-        }
-        currSpecialCommandDropDownItem2 = {
-            "text": 'Take-Off (Default)',
-            "font_size": self.app.fontSizes['primary'],
-            "on_release": lambda command='Takeoff': self.execute_special_command('self.drone.takeoff()'),
-        }
 
-        availableSpecialCommands.append(currSpecialCommandDropDownItem)
-        availableSpecialCommands.append(currSpecialCommandDropDownItem2)
+        actionObjectList = list_all_commands()
+
+        for action in actionObjectList:
+            currSpecialCommandDropDownItem = {
+            "text": action.key,
+            "font_size": self.app.fontSizes['primary'],
+            "on_release": lambda command=action.key: self.execute_special_command('self.drone.'+action.command),
+            }
+            print(action)
+            print(action.command)
+            availableSpecialCommands.append(currSpecialCommandDropDownItem)
         return availableSpecialCommands
         
 
