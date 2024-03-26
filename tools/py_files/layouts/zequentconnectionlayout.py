@@ -66,11 +66,12 @@ class ZequentConnectionLayout(ZequentGridLayout):
             print(connectThread)
 
         if isinstance(connectThread, ErrorMessage):
-            self.removeSpinner()
+            self.remove_spinner()
             connectThread : ErrorMessage
             currStateLabel.text = self.app.root.ids.translator.translate('failed_message')
             currStateLabel.color = self.app.customColors["failure"]
             ZequentToast.showErrorMessage(connectThread.message)
+            self.enable_widgets()
         else:
             connectThread: MAVLink_heartbeat_message
             self.app.set_drone_instance(self.drone)
@@ -82,7 +83,7 @@ class ZequentConnectionLayout(ZequentGridLayout):
             log.info("OK")
    
 
-    def addSpinner(self,button):
+    def add_spinner(self,button):
         connection_grid: ZequentGridLayout = self.ids.connection_grid
         anchorLayout = ZequentAnchorLayout()
         spinner = ZequentSpinner()
@@ -90,11 +91,22 @@ class ZequentConnectionLayout(ZequentGridLayout):
         anchorLayout.add_widget(spinner)
         connection_grid.add_widget(anchorLayout)
         self.ids['anchor_layout_spinner'] = weakref.ref(anchorLayout)
+        self.disable_widgets()
 
         threading.Thread(target=self.tryConnection).start()
         
     @mainthread
-    def removeSpinner(self):
+    def remove_spinner(self):
         self.ids.connection_grid.remove_widget(self.ids.anchor_layout_spinner)
 
-        
+
+    def disable_widgets(self):
+        self.ids.vehicle_item.opacity = 0
+        self.ids.connection_type.opacity = 0
+        self.ids.connection_grid.disabled = True
+
+    @mainthread
+    def enable_widgets(self):
+        self.ids.vehicle_item.opacity = 1
+        self.ids.connection_type.opacity = 1
+        self.ids.connection_grid.disabled = False
