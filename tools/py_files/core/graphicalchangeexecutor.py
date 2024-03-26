@@ -11,3 +11,8 @@ class GraphicalChangeExecutor(Widget):
     @mainthread
     def execute(method):
         method()
+
+    @staticmethod
+    @mainthread
+    def executeWithParams(method, *args):
+        method(args)

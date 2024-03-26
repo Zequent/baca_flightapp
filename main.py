@@ -22,6 +22,7 @@ from tools.py_files.appbar.zequentappbar import *
 from tools.py_files.layouts.maincontrollerlayout import *
 from tools.py_files.layouts.zequentcameralayout import *
 from tools.py_files.layouts.zequentconnectionlayout import *
+from tools.py_files.layouts.zequentlogs import *
 from tools.py_files.layouts.zequentrootlayout import *
 
 ##Layouts-CASUALS
@@ -90,7 +91,8 @@ class ZequentMavLinkApp(MDApp):
         #Casuals
         "success": [0,1,0,1],
         "failure": [1,0,0,1],
-        "grey": [0.72265625,0.72265625,0.72265625,1]
+        "grey": [0.72265625,0.72265625,0.72265625,1],
+        "transparent-grey": [0.72265625,0.72265625,0.72265625,.3]
     }
 
     fontSizes = {

@@ -59,7 +59,7 @@ class ZequentConnectionLayout(ZequentGridLayout):
                 # log.info(connectionType.current_item)
                 # log.info(lteAddress)
                 self.drone = ArduPlaneObject("TestVtol", "testuuid", "OrgId", "TestModel",
-                                             ConnectionType.UDPIN, "192.168.1.25", "14550", None)
+                                             ConnectionType.UDPIN, lteAddress, "14550", None)
                 connectionResponse = self.drone.connect()
 
         if isinstance(connectionResponse, ErrorMessage):

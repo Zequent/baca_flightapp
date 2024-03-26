@@ -29,6 +29,8 @@ class MainControllerLayout(ZequentBoxLayout):
     def get_current_pos_from_drone(self):
         if self.drone is not None:
             response = self.drone.get_position()
+            self.ids.row_logs.logs = str(response)
+
             lat = response.lat * 0.0000001
             lon = response.lon * 0.0000001
             hdg = response.hdg / 100
