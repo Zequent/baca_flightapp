@@ -108,16 +108,16 @@ class ZequentAppBar(MDTopAppBar):
         self.drone: ArduPlaneObject = self.app.drone
         availableSpecialCommands = []
 
-        actionObjectList = list_all_commands()
+        actionObjectList = self.drone.get_basic_commands()
 
+
+    
         for action in actionObjectList:
             currSpecialCommandDropDownItem = {
             "text": action.key,
             "font_size": self.app.fontSizes['primary'],
-            "on_release": lambda command=action.key: self.execute_special_command('self.drone.'+action.command),
+            "on_release": lambda command=action.command: self.execute_special_command('self.drone.'+command),
             }
-            print(action)
-            print(action.command)
             availableSpecialCommands.append(currSpecialCommandDropDownItem)
         return availableSpecialCommands
         
@@ -129,4 +129,4 @@ class ZequentAppBar(MDTopAppBar):
             ZequentToast.showInfoMessage(self.mavResult.details)
 
     def execute_special_command_worker(self, method):
-        self.mavResult =  exec(method)
+        exec(method)
