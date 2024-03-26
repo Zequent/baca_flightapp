@@ -55,6 +55,7 @@ from tools.py_files.widgets.zequentflatbutton import *
 from tools.py_files.widgets.zequentlabel import *
 from tools.py_files.widgets.zequentmapview import *
 from tools.py_files.widgets.zequentsingletextinput import *
+from tools.py_files.widgets.zequentspinner import *
 from tools.py_files.widgets.zequenttoast import *
 
 ###IMPORT ALL KV_FILES

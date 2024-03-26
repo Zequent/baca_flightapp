@@ -47,11 +47,14 @@
                     current_item: self.getInitialConnectionType()
     ZequentGridLayout:
         cols: 1
+        id: connection_grid
         ZequentAnchorLayout:
             ZequentLabel:
                 id: connection_status_label
                 text: root.connectionStatusText
         ZequentAnchorLayout:
             ZequentButton:
+                id: connect_button
                 text: 'Connect'
-                on_press: root.tryConnection(self, connection_type, connection_status_label)
+                on_press: 
+                    root.addSpinner(self)
