@@ -27,7 +27,6 @@ class Utils:
     @staticmethod
     def getSettingsFile():
         return os.path.abspath("tools/local/settings.json")
-
     @staticmethod
     def getTranslatorFolder():
         return ('tools/localization/')
