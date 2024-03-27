@@ -103,8 +103,6 @@ class ZequentAppBar(MDTopAppBar):
         self.special_commands_dropdown.pos_hint = {'right': 1, 'top': 1}
         self.special_commands_dropdown.open()
 
-    # TODO sabri! Commands in List
-
     def get_special_commands_drop_down_items(self):
         self.app = MDApp.get_running_app()
         self.drone: ArduPlaneObject = self.app.drone
@@ -131,7 +129,5 @@ class ZequentAppBar(MDTopAppBar):
         command = getattr(ArduPlaneObject, method)
         if args is not None:
             self.mavResult = command(self.drone, *args)
-            print(self.mavResult)
         else:
             self.mavResult = command(self.drone)
-            print(self.mavResult)
