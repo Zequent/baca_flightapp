@@ -80,7 +80,7 @@ class ZequentConnectionLayout(ZequentGridLayout):
             Clock.schedule_once(partial(self.app.changeScreen, 'main'), 3)
 
     def start_connecting_process(self, button):
-        connection_grid: ZequentGridLayout = self.ids.connection_grid
+        connection_grid: ZequentGridLayout = self.ids.connection_type
         anchor_layout = ZequentAnchorLayout()
         spinner = ZequentSpinner()
         spinner.opacity = 1
@@ -99,9 +99,9 @@ class ZequentConnectionLayout(ZequentGridLayout):
     def disable_widgets(self):
         self.ids.vehicle_item.opacity = 0
         self.ids.connection_type.opacity = 0
-        self.ids.connection_grid.disabled = True
+       # self.ids.connection_grid.disabled = True
 
     def enable_widgets(self):
         self.ids.vehicle_item.opacity = 1
         self.ids.connection_type.opacity = 1
-        self.ids.connection_grid.disabled = False
+        #self.ids.connection_grid.disabled = False
