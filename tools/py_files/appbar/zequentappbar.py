@@ -31,6 +31,7 @@ class ZequentAppBar(MDTopAppBar):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.special_commands_dropdown = None
         self.drone = None
         self.app = None
 
@@ -97,9 +98,10 @@ class ZequentAppBar(MDTopAppBar):
 
     def open_special_commands(self, item):
         self.app = MDApp.get_running_app()
-        self.specialCommandsDropdown = ZequentDropDownMenu(caller=item, items=self.get_special_commands_drop_down_items())
-        self.specialCommandsDropdown.pos_hint = {'right': 1, 'top': 1}
-        self.specialCommandsDropdown.open()
+        self.special_commands_dropdown = ZequentDropDownMenu(caller=item,
+                                                             items=self.get_special_commands_drop_down_items())
+        self.special_commands_dropdown.pos_hint = {'right': 1, 'top': 1}
+        self.special_commands_dropdown.open()
 
     # TODO sabri! Commands in List
 
