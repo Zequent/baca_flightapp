@@ -31,20 +31,22 @@ class ZequentAppBar(MDTopAppBar):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.drone = None
+        self.app = None
 
     def build(self):
         pass
 
     def open_language_dropdown(self, item):
-        self.languageDropdown = ZequentDropDownMenu(caller=item, items=self.getLanguageDropDownItems())
+        self.languageDropdown = ZequentDropDownMenu(caller=item, items=self.get_language_drop_down_items())
         self.languageDropdown.pos_hint = {'center_x': .5, 'center_y': .5}
         self.languageDropdown.open()
 
-    def getLanguageDropDownItems(self):
+    def get_language_drop_down_items(self):
         self.app = MDApp.get_running_app()
         from os import walk
 
-        availableLanguages = []
+        available_languages = []
         for (dirpath, dirnames, filenames) in walk(Utils.getTranslatorFolder()):
             filenames = filenames
             break
@@ -56,32 +58,32 @@ class ZequentAppBar(MDTopAppBar):
                 "font_size": self.app.fontSizes['primary'],
                 "on_release": lambda language=filename: self.show_alert_dialog(language),
             }
-            availableLanguages.append(currLanguageDropDownItem)
+            available_languages.append(currLanguageDropDownItem)
 
-        return availableLanguages
+        return available_languages
 
     def show_alert_dialog(self, language):
         self.translator = self.app.root.ids.translator
-        cancelButton = ZequentFlatButton()
-        cancelButton.text = self.translator.translate("cancel")
-        cancelButton.bind(on_press=self.hide_alert_dialog)
-        submitButton = ZequentFlatButton()
-        submitButton.text = self.translator.translate("submit")
-        submitButton.bind(on_press=partial(self.setLanguage, language))
+        cancel_button = ZequentFlatButton()
+        cancel_button.text = self.translator.translate("cancel")
+        cancel_button.bind(on_press=self.hide_alert_dialog)
+        submit_button = ZequentFlatButton()
+        submit_button.text = self.translator.translate("submit")
+        submit_button.bind(on_press=partial(self.set_language, language))
         self.submitDialog = ZequentDialog(
             buttons=[
-                cancelButton,
-                submitButton
+                cancel_button,
+                submit_button
             ]
         )
         self.submitDialog.text = self.translator.translate('restart_text')
         self.submitDialog.open()
 
-    def setLanguage(self, *args):
+    def set_language(self, *args):
         self.translator.set_locale(args[0])
-        self.saveInSettings(args[0])
+        self.save_in_settings(args[0])
 
-    def saveInSettings(self, language):
+    def save_in_settings(self, language):
         with open(Utils.getSettingsFile()) as infile:
             data = json.load(infile)
         data["lastUsedLanguage"] = language
@@ -95,27 +97,27 @@ class ZequentAppBar(MDTopAppBar):
 
     def open_special_commands(self, item):
         self.app = MDApp.get_running_app()
-        self.specialCommandsDropdown = ZequentDropDownMenu(caller=item, items=self.getSpecialCommandsDropDownItems())
+        self.specialCommandsDropdown = ZequentDropDownMenu(caller=item, items=self.get_special_commands_drop_down_items())
         self.specialCommandsDropdown.pos_hint = {'right': 1, 'top': 1}
         self.specialCommandsDropdown.open()
 
     # TODO sabri! Commands in List
 
-    def getSpecialCommandsDropDownItems(self):
+    def get_special_commands_drop_down_items(self):
         self.app = MDApp.get_running_app()
         self.drone: ArduPlaneObject = self.app.drone
-        availableSpecialCommands = []
+        available_special_commands = []
 
-        actionObjectList = self.drone.get_basic_commands()
+        action_object_list = self.drone.get_basic_commands()
 
-        for action in actionObjectList:
-            currSpecialCommandDropDownItem = {
+        for action in action_object_list:
+            curr_special_command_drop_down_item = {
                 "text": action.key,
                 "font_size": self.app.fontSizes['primary'],
                 "on_release": lambda command=action.command: self.execute_special_command(command),
             }
-            availableSpecialCommands.append(currSpecialCommandDropDownItem)
-        return availableSpecialCommands
+            available_special_commands.append(curr_special_command_drop_down_item)
+        return available_special_commands
 
     def execute_special_command(self, method):
         self.execute_special_command_worker(method)
