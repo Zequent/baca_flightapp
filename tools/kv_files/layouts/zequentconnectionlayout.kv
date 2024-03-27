@@ -1,16 +1,22 @@
 
 
 <ZequentConnectionLayout>:
-    size_hint: 1, 1
+    size_hint: .5, 1
     ZequentAnchorLayout:
-        ZequentDropDownItem:
-            id: vehicle_item
-            text: self.getInitialVehicle()
-            on_release: self.openVehicleMenu(self)
-            current_item: self.getInitialVehicle()
+        ZequentConnectionButton:
+            id: connect_dropdown
+            text: "Connect Aircraft"
     ZequentGridLayout:
-        cols:1
-        id: connection_type
+        cols:1 
+        id: connection_type 
+        #opacity: 1 if connect_dropdown.enabled == True else 0
+        #size_hint_y: 0 if connect_dropdown.enabled == True else 1
+        ZequentAnchorLayout:
+            ZequentDropDownItem:
+                id: vehicle_item
+                text: self.getInitialVehicle()
+                on_release: self.openVehicleMenu(self)
+                current_item: self.getInitialVehicle()
         ZequentAnchorLayout:
             ZequentButton:
                 id: rfc_button
@@ -45,9 +51,6 @@
                     text: self.getInitialConnectionType()
                     on_release: self.openLTEConnectionTypeMenu(self)
                     current_item: self.getInitialConnectionType()
-    ZequentGridLayout:
-        cols: 1
-        id: connection_grid
         ZequentAnchorLayout:
             ZequentLabel:
                 id: connection_status_label
@@ -58,3 +61,8 @@
                 text: 'Connect'
                 on_press: 
                     root.start_connecting_process(self)
+    ZequentAnchorLayout:
+        ZequentConnectionButton:
+            id: connect_dropdown
+            text: "Choose Languages"
+        

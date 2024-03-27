@@ -49,6 +49,7 @@ from tools.py_files.translator.translator import *
 ##WIDGETS
 from tools.py_files.widgets.zequentactionicon import *
 from tools.py_files.widgets.zequentbutton import *
+from tools.py_files.widgets.zequentconnectionbutton import *
 from tools.py_files.widgets.zequentdialog import *
 from tools.py_files.widgets.zequentdropdownitem import *
 from tools.py_files.widgets.zequentdropdownmenu import *
@@ -92,7 +93,8 @@ class ZequentMavLinkApp(MDApp):
         "success": [0,1,0,1],
         "failure": [1,0,0,1],
         "grey": [0.72265625,0.72265625,0.72265625,1],
-        "transparent-grey": [0.72265625,0.72265625,0.72265625,.3]
+        "transparent-grey": [0.72265625,0.72265625,0.72265625,.3],
+        "gold": [0.78,0.56,0.05,1],
     }
 
     fontSizes = {
