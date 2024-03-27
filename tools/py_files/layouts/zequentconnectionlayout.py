@@ -13,7 +13,7 @@ from tools.py_files.widgets.zequentlabel import ZequentLabel
 from tools.py_files.widgets.zequentspinner import ZequentSpinner
 from tools.py_files.widgets.zequenttoast import *
 from zequentmavlinklib.ArduPlane import ArduPlaneObject
-from zequentmavlinklib.Globals import ConnectionType, ErrorMessage
+from zequentmavlinklib.Globals import ConnectionType, ErrorMessage, WorkerThread
 from pymavlink.dialects.v20.common import MAVLink_heartbeat_message
 from logging import getLogger
 from kivy.clock import mainthread
@@ -36,7 +36,11 @@ class ZequentConnectionLayout(ZequentGridLayout):
     def build(self):
         pass
 
+    def execute_connect(self):
+        return self.drone.connect()
+
     def try_connection(self, *args):
+
         button: ZequentButton = self.ids.connect_button
         connectionType: ZequentGridLayout = self.ids.connection_type
         curr_state_label: ZequentLabel = self.ids.connection_status_label
@@ -56,12 +60,17 @@ class ZequentConnectionLayout(ZequentGridLayout):
                 # log.info(connectionType.current_item)
                 # log.info(lte_address)
                 self.drone = ArduPlaneObject("TestVtol", "testuuid", "OrgId", "TestModel",
-                                             ConnectionType.UDPIN, '192.168.1.25', "14550", None)
+                                             ConnectionType.UDPIN, lte_address, "14550", None)
+                connection_response = self.drone.connect()
 
-                connection_response: object = start_command_execution("Connect to Vehicle", self.drone.connect,
-                                                           None)
-
-        if not isinstance(connection_response, ErrorMessage):
+        if isinstance(connection_response, ErrorMessage):
+            GraphicalChangeExecutor.execute(self.remove_spinner)
+            connection_response: ErrorMessage
+            curr_state_label.text = self.app.root.ids.translator.translate('failed_message')
+            curr_state_label.color = self.app.customColors["failure"]
+            ZequentToast.showErrorMessage(connection_response.message)
+            GraphicalChangeExecutor.execute(self.enable_widgets)
+        else:
             connection_response: MAVLink_heartbeat_message
             self.app.set_drone_instance(self.drone)
             button.disabled = True
@@ -69,13 +78,6 @@ class ZequentConnectionLayout(ZequentGridLayout):
             curr_state_label.color = self.app.customColors["success"]
             self.app.set_vehicle_type(str(self.ids.vehicle_item.current_item))
             Clock.schedule_once(partial(self.app.changeScreen, 'main'), 3)
-        else:
-            GraphicalChangeExecutor.execute(self.remove_spinner)
-            connection_response: ErrorMessage
-            curr_state_label.text = self.app.root.ids.translator.translate('failed_message')
-            curr_state_label.color = self.app.customColors["failure"]
-            ZequentToast.showErrorMessage(connection_response.message)
-            GraphicalChangeExecutor.execute(self.enable_widgets)
 
     def start_connecting_process(self, button):
         connection_grid: ZequentGridLayout = self.ids.connection_grid
@@ -86,7 +88,10 @@ class ZequentConnectionLayout(ZequentGridLayout):
         connection_grid.add_widget(anchor_layout)
         self.ids['anchor_layout_spinner'] = weakref.ref(anchor_layout)
         self.disable_widgets()
-        self.try_connection()
+
+        thread = WorkerThread(method=self.try_connection, name="Connecting to Vehicle")
+        thread.start()
+        thread.join()
 
     def remove_spinner(self):
         self.ids.connection_grid.remove_widget(self.ids.anchor_layout_spinner)
