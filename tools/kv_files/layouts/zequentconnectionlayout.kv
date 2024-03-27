@@ -6,11 +6,13 @@
         ZequentConnectionButton:
             id: connect_dropdown
             text: "Connect Aircraft"
+            on_press:
+                self.checkGrid(root)
+            currObject:
+                connection_type
     ZequentGridLayout:
         cols:1 
         id: connection_type 
-        #opacity: 1 if connect_dropdown.enabled == True else 0
-        #size_hint_y: 0 if connect_dropdown.enabled == True else 1
         ZequentAnchorLayout:
             ZequentDropDownItem:
                 id: vehicle_item

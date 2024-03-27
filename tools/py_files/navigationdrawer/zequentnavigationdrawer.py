@@ -13,7 +13,7 @@ class ZequentNavigationDrawer(MDNavigationDrawer):
     def on_state(self, widget, state):
         if not self.isCreated:
             self.app=MDApp.get_running_app()
-            navigationItems = Utils.getNavigationDrawerItems(self.app.root.ids.translator, self.app.root.ids.sm)
+            navigationItems = Utils.getNavigationDrawerItems(self.app.translator, self.app.root.ids.sm)
             
             for item in navigationItems:
                 self.ids.drawer_menu.add_widget(item)

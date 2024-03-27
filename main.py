@@ -7,7 +7,7 @@ from kivy.properties import BooleanProperty
 from kivy.properties import NumericProperty
 import os
 
-
+import weakref
 ##toast
 from kivymd.toast import toast
 ##Permission
@@ -47,6 +47,7 @@ from tools.py_files.screenmanager.zequentrootscreenmanager import *
 from tools.py_files.translator.translator import *
 
 ##WIDGETS
+from tools.py_files.widgets.expansionpanel.zequentexpansionpanel import *
 from tools.py_files.widgets.zequentactionicon import *
 from tools.py_files.widgets.zequentbutton import *
 from tools.py_files.widgets.zequentconnectionbutton import *
@@ -131,6 +132,7 @@ class ZequentMavLinkApp(MDApp):
     def __init__(self, **kwargs):
         self.title = self.appTitle
         super().__init__(**kwargs)
+        self.translator = Translator()
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Gray"
         self.connected = False

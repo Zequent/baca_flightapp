@@ -7,6 +7,7 @@ from functools import partial
 from kivymd.app import MDApp
 from tools.Utils import *
 
+from tools.py_files.widgets.expansionpanel.zequentexpansionpanel import ZequentExpansionPanel
 from tools.py_files.widgets.zequentbutton import ZequentButton
 from tools.py_files.widgets.zequentdropdownitem import ZequentDropDownItem
 from tools.py_files.widgets.zequentlabel import ZequentLabel
@@ -17,6 +18,8 @@ from zequentmavlinklib.Globals import ConnectionType, ErrorMessage, WorkerThread
 from pymavlink.dialects.v20.common import MAVLink_heartbeat_message
 from logging import getLogger
 from kivy.clock import mainthread
+import weakref
+from kivymd.uix.expansionpanel import MDExpansionPanelOneLine
 import weakref
 
 log = getLogger(__name__)
@@ -30,8 +33,10 @@ class ZequentConnectionLayout(ZequentGridLayout):
         super().__init__(**kwargs)
         self.drone = None
         self.app = MDApp.get_running_app()
+
         if self.app.root is not None:
-            self.connectionStatusText = self.app.root.ids.translator.translate('not_connected')
+            self.connectionStatusText = self.app.translator.translate('not_connected')
+        
 
     def build(self):
         pass
@@ -52,7 +57,7 @@ class ZequentConnectionLayout(ZequentGridLayout):
             lte_address = self.ids.lte_address
             lte_address = str(lte_address.text)
             if lte_address is None or lte_address is "":
-                ZequentToast.showInfoMessage(self.app.root.ids.translator.translate('lte_address_input_invalid'))
+                ZequentToast.showInfoMessage(self.app.translator.translate('lte_address_input_invalid'))
                 return
             else:
                 # log.info("LTE adress:"+ lte_address)
@@ -66,7 +71,7 @@ class ZequentConnectionLayout(ZequentGridLayout):
         if isinstance(connection_response, ErrorMessage):
             GraphicalChangeExecutor.execute(self.remove_spinner)
             connection_response: ErrorMessage
-            curr_state_label.text = self.app.root.ids.translator.translate('failed_message')
+            curr_state_label.text = self.app.translator.translate('failed_message')
             curr_state_label.color = self.app.customColors["failure"]
             ZequentToast.showErrorMessage(connection_response.message)
             GraphicalChangeExecutor.execute(self.enable_widgets)
@@ -74,7 +79,7 @@ class ZequentConnectionLayout(ZequentGridLayout):
             connection_response: MAVLink_heartbeat_message
             self.app.set_drone_instance(self.drone)
             button.disabled = True
-            curr_state_label.text = self.app.root.ids.translator.translate('success_message')
+            curr_state_label.text = self.app.translator.translate('success_message')
             curr_state_label.color = self.app.customColors["success"]
             self.app.set_vehicle_type(str(self.ids.vehicle_item.current_item))
             Clock.schedule_once(partial(self.app.changeScreen, 'main'), 3)

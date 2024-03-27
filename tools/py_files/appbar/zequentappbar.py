@@ -22,8 +22,6 @@ logging.basicConfig(level=logging.INFO)
 
 
 class ZequentAppBar(MDTopAppBar):
-    translator = None
-
     submitDialog = None
     languageDropdown = None
 
@@ -33,7 +31,7 @@ class ZequentAppBar(MDTopAppBar):
         super().__init__(**kwargs)
         self.special_commands_dropdown = None
         self.drone = None
-        self.app = None
+        self.app = MDApp.get_running_app()
 
     def build(self):
         pass
@@ -64,12 +62,11 @@ class ZequentAppBar(MDTopAppBar):
         return available_languages
 
     def show_alert_dialog(self, language):
-        self.translator = self.app.root.ids.translator
         cancel_button = ZequentFlatButton()
-        cancel_button.text = self.translator.translate("cancel")
+        cancel_button.text = self.app.translator.translate("cancel")
         cancel_button.bind(on_press=self.hide_alert_dialog)
         submit_button = ZequentFlatButton()
-        submit_button.text = self.translator.translate("submit")
+        submit_button.text = self.app.translator.translate("submit")
         submit_button.bind(on_press=partial(self.set_language, language))
         self.submitDialog = ZequentDialog(
             buttons=[
@@ -77,7 +74,7 @@ class ZequentAppBar(MDTopAppBar):
                 submit_button
             ]
         )
-        self.submitDialog.text = self.translator.translate('restart_text')
+        self.submitDialog.text = self.app.translator.translate('restart_text')
         self.submitDialog.open()
 
     def set_language(self, *args):
