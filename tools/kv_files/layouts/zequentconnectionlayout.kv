@@ -6,65 +6,66 @@
         ZequentConnectionButton:
             id: connect_dropdown
             text: "Connect Aircraft"
+            icon: "arrow-right-bold" if self.enabled == True else "arrow-up-bold"
             on_press:
                 self.checkGrid(root)
             currObject:
-                connection_type
+                connection_type_layout
     ZequentGridLayout:
         cols:1 
-        id: connection_type 
-        ZequentAnchorLayout:
-            ZequentDropDownItem:
-                id: vehicle_item
-                text: self.getInitialVehicle()
-                on_release: self.openVehicleMenu(self)
-                current_item: self.getInitialVehicle()
-        ZequentAnchorLayout:
-            ZequentButton:
-                id: rfc_button
-                text: 'RFC'
-                disabled: True 
-                on_press: 
-                    lte_button.disabled = False
-                    self.disabled=True
+        id: connection_type_layout 
         ZequentGridLayout:
-            cols:3
+            cols:2
+            padding: app.paddings["none"]
             ZequentAnchorLayout:
-                ZequentButton:
-                    id: lte_button
-                    text: 'LTE'
-                    disabled: False
-                    on_press: 
-                        rfc_button.disabled = False
-                        self.disabled=True
+                ZequentLabel:
+                    text: app.translator.translate("connection_type")
+            ZequentAnchorLayout:
+                ZequentDropDownItem:
+                    id: connection_type_dropdown
+                    text: self.getInitialConnectionType()
+                    on_release: self.openLTEConnectionTypeMenu(self)
+                    current_item: self.getInitialConnectionType()
+        ZequentGridLayout:
+            cols:2
+            ZequentAnchorLayout:
+                ZequentLabel:
+                    text: app.translator.translate("connection_layout_drone_type:")
+            ZequentAnchorLayout:
+                ZequentDropDownItem:
+                    id: vehicle_item
+                    text: self.getInitialVehicle()
+                    on_release: self.openVehicleMenu(self)
+                    current_item: self.getInitialVehicle()
+        ZequentGridLayout:
+            cols:2
+            opacity: 0 if connection_type_dropdown.current_item is "RFC" else 1 
+            ZequentAnchorLayout:
+                ZequentLabel:
+                    text: app.translator.translate("connection_layout_ip:")
             ZequentAnchorLayout:
                 ZequentSingleTextInput:
-                    opacity:
-                        0 if not rfc_button.disabled else 1
                     id: lte_address
                     disabled: False
                     font_size: "40dp"
                     text: "127.0.0.1"
-            ZequentAnchorLayout:
-                opacity:
-                    0 if not rfc_button.disabled else 1
-                ZequentDropDownItem:
-                    id: lte_connection_type
-                    text: self.getInitialConnectionType()
-                    on_release: self.openLTEConnectionTypeMenu(self)
-                    current_item: self.getInitialConnectionType()
         ZequentAnchorLayout:
             ZequentLabel:
                 id: connection_status_label
                 text: root.connectionStatusText
-        ZequentAnchorLayout:
-            ZequentButton:
+            ZequentConnectionButton:
                 id: connect_button
+                md_bg_color: app.customColors["success"]
                 text: 'Connect'
                 on_press: 
                     root.start_connecting_process(self)
+            
     ZequentAnchorLayout:
         ZequentConnectionButton:
-            id: connect_dropdown
+            id: languages_button
             text: "Choose Languages"
-        
+            on_press: app.root.ids.appbar.open_language_dropdown(self)
+    ZequentAnchorLayout:
+        ZequentLabel:
+            text: str(app.translator.translate("current_language:")) + " " + str(app.translator.locale)
+            

@@ -47,13 +47,13 @@ class ZequentConnectionLayout(ZequentGridLayout):
     def try_connection(self, *args):
 
         button: ZequentButton = self.ids.connect_button
-        connectionType: ZequentGridLayout = self.ids.connection_type
+        currConnectionType: ZequentDropDownItem = self.ids.connection_type_dropdown
         curr_state_label: ZequentLabel = self.ids.connection_status_label
-
         self.app = MDApp.get_running_app()
-        if not self.ids.rfc_button.disabled:
+
+        if currConnectionType.current_item == "RFC":
             self.app.log.info("RFC")
-        elif not self.ids.lte_button.disabled:
+        else:
             lte_address = self.ids.lte_address
             lte_address = str(lte_address.text)
             if lte_address is None or lte_address is "":
@@ -61,11 +61,16 @@ class ZequentConnectionLayout(ZequentGridLayout):
                 return
             else:
                 # log.info("LTE adress:"+ lte_address)
-                connectionType: ZequentDropDownItem = self.ids.lte_connection_type
                 # log.info(connectionType.current_item)
                 # log.info(lte_address)
+                tmp_connectionType = None
+                if currConnectionType.current_item == "UDPIN":
+                    tmp_connectionType=ConnectionType.UDPIN
+                elif currConnectionType.current_item == "TCPIN":
+                    tmp_connectionType=ConnectionType.TCPIN
+
                 self.drone = ArduPlaneObject("TestVtol", "testuuid", "OrgId", "TestModel",
-                                             ConnectionType.UDPIN, lte_address, "14550", None)
+                                             tmp_connectionType, lte_address, "14550", None)
                 connection_response = self.drone.connect()
 
         if isinstance(connection_response, ErrorMessage):
@@ -85,7 +90,7 @@ class ZequentConnectionLayout(ZequentGridLayout):
             Clock.schedule_once(partial(self.app.changeScreen, 'main'), 3)
 
     def start_connecting_process(self, button):
-        connection_grid: ZequentGridLayout = self.ids.connection_type
+        connection_grid: ZequentGridLayout = self.ids.connection_type_layout
         anchor_layout = ZequentAnchorLayout()
         spinner = ZequentSpinner()
         spinner.opacity = 1
@@ -103,10 +108,10 @@ class ZequentConnectionLayout(ZequentGridLayout):
 
     def disable_widgets(self):
         self.ids.vehicle_item.opacity = 0
-        self.ids.connection_type.opacity = 0
+        self.ids.connection_type_layout.opacity = 0
        # self.ids.connection_grid.disabled = True
 
     def enable_widgets(self):
         self.ids.vehicle_item.opacity = 1
-        self.ids.connection_type.opacity = 1
+        self.ids.connection_type_layout.opacity = 1
         #self.ids.connection_grid.disabled = False

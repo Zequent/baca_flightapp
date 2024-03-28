@@ -13,6 +13,7 @@ class ZequentConnectionButton(MDFillRoundFlatIconButton):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.ripple_scale=0
+        
     
     def build(self):
         pass

@@ -78,7 +78,7 @@ class ZequentAppBar(MDTopAppBar):
         self.submitDialog.open()
 
     def set_language(self, *args):
-        self.translator.set_locale(args[0])
+        self.app.translator.set_locale(args[0])
         self.save_in_settings(args[0])
 
     def save_in_settings(self, language):

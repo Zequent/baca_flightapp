@@ -89,6 +89,8 @@ class ZequentMavLinkApp(MDApp):
         "second": [0,0,0,1],
         #BLACK
         "black": [0,0,0,0.9],
+        #WHITE
+        "white": [1,1,1,1],
         
         #Casuals
         "success": [0,1,0,1],
