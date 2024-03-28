@@ -1,9 +1,5 @@
 from kivymd.uix.button import MDFillRoundFlatIconButton
 from kivy.properties import BooleanProperty, ObjectProperty
-from copy import copy
-
-from matplotlib.animation import Animation
-from kivy.uix.behaviors import ToggleButtonBehavior
 
 class ZequentConnectionButton(MDFillRoundFlatIconButton):
     enabled = BooleanProperty(False)

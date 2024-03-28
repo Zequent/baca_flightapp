@@ -99,15 +99,24 @@ class WorkerThread(threading.Thread):
         self.method = method
         self.response = None
         self.args = arguments
+        self.result_future = None
+        self.done_callbacks = []
+
+
+    def set_future(self, future):
+        self.result_future = future
+
+    def add_done_callback(self, callback):
+        self.done_callbacks.append(callback)
 
     def run(self):
-        log.debug("Starting Thread: " + self.name)
         try:
-            if self.args is not None:
-                self.response = self.method(*self.args)
-            else:
-                self.response = self.method()
-            log.debug("Finished Execution of Thread: " + self.name)
+            result = self.method(*self.args)
+            if self.result_future:
+                self.result_future.set_result(result)
         except Exception as e:
-            log.debug(f"Error in thread {self.name}: {e}")
-            return e
+            if self.result_future:
+                self.result_future.set_exception(e)
+        finally:
+            for callback in self.done_callbacks:
+                callback(self.result_future)

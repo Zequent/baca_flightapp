@@ -14,13 +14,13 @@ from tools.py_files.widgets.zequentlabel import ZequentLabel
 from tools.py_files.widgets.zequentspinner import ZequentSpinner
 from tools.py_files.widgets.zequenttoast import *
 from zequentmavlinklib.ArduPlane import ArduPlaneObject
-from zequentmavlinklib.Globals import ConnectionType, ErrorMessage, WorkerThread
+from zequentmavlinklib.Globals import ConnectionType, ErrorMessage
 from pymavlink.dialects.v20.common import MAVLink_heartbeat_message
 from logging import getLogger
-from kivy.clock import mainthread
 import weakref
-from kivymd.uix.expansionpanel import MDExpansionPanelOneLine
 import weakref
+import concurrent.futures
+
 
 log = getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -33,6 +33,7 @@ class ZequentConnectionLayout(ZequentGridLayout):
         super().__init__(**kwargs)
         self.drone = None
         self.app = MDApp.get_running_app()
+        self.spinner = None
 
         if self.app.root is not None:
             self.connectionStatusText = self.app.translator.translate('not_connected')
@@ -71,16 +72,15 @@ class ZequentConnectionLayout(ZequentGridLayout):
 
                 self.drone = ArduPlaneObject("TestVtol", "testuuid", "OrgId", "TestModel",
                                              tmp_connectionType, lte_address, "14550", None)
-                connection_response = self.drone.connect()
+                thread = WorkerThread("Connecting to Drone", self.drone.connect)
+                future = concurrent.futures.Future()
+                future.set_running_or_notify_cancel()
+                thread.set_future(future)
+                thread.add_done_callback(self.on_thread_complete)
+                thread.start()
+                connection_response = thread.result_future.result()
 
-        if isinstance(connection_response, ErrorMessage):
-            GraphicalChangeExecutor.execute(self.remove_spinner)
-            connection_response: ErrorMessage
-            curr_state_label.text = self.app.translator.translate('failed_message')
-            curr_state_label.color = self.app.customColors["failure"]
-            ZequentToast.showErrorMessage(connection_response.message)
-            GraphicalChangeExecutor.execute(self.enable_widgets)
-        else:
+        if not isinstance(connection_response, ErrorMessage):
             connection_response: MAVLink_heartbeat_message
             self.app.set_drone_instance(self.drone)
             button.disabled = True
@@ -88,24 +88,53 @@ class ZequentConnectionLayout(ZequentGridLayout):
             curr_state_label.color = self.app.customColors["success"]
             self.app.set_vehicle_type(str(self.ids.vehicle_item.current_item))
             Clock.schedule_once(partial(self.app.changeScreen, 'main'), 3)
+        else:
+            GraphicalChangeExecutor.execute(self.remove_spinner)
+            res = connection_response
+            curr_state_label.text = self.app.translator.translate('failed_message')
+            curr_state_label.color = self.app.customColors["failure"]
+            ZequentToast.showErrorMessage(connection_response.message)
+            GraphicalChangeExecutor.execute(self.enable_widgets)
+      
 
+
+    def add_spinner(self):
+        self.spinner = ZequentSpinner()
+        self.spinner.opacity = 1 
+        self.anchor_layout.add_widget(self.spinner)   
+        self.connection_grid.add_widget(self.anchor_layout)
+    
     def start_connecting_process(self, button):
-        connection_grid: ZequentGridLayout = self.ids.connection_type_layout
-        anchor_layout = ZequentAnchorLayout()
-        spinner = ZequentSpinner()
-        spinner.opacity = 1
-        anchor_layout.add_widget(spinner)
-        connection_grid.add_widget(anchor_layout)
-        self.ids['anchor_layout_spinner'] = weakref.ref(anchor_layout)
-        self.disable_widgets()
+        self.connection_grid: ZequentGridLayout = self.ids.connection_type_layout
+        self.anchor_layout = ZequentAnchorLayout()
+        self.ids['anchor_layout_spinner'] = weakref.ref(self.anchor_layout)
+        
+        GraphicalChangeExecutor.execute(self.add_spinner)
 
+        self.disable_widgets()
         thread = WorkerThread(method=self.try_connection, name="Connecting to Vehicle")
+        future = concurrent.futures.Future()
+        future.set_running_or_notify_cancel()
+        thread.set_future(future)
+        thread.add_done_callback(self.on_thread_complete)
         thread.start()
         thread.join()
 
-    def remove_spinner(self):
-        self.ids.connection_grid.remove_widget(self.ids.anchor_layout_spinner)
 
+    
+    def on_thread_complete(self, future):
+        self.spinner.opacity = 1
+        if future.result() is not None:
+            GraphicalChangeExecutor.execute(self.enable_widgets)
+            pass
+
+
+    
+    def remove_spinner(self):
+        self.ids.connection_type_layout.remove_widget(self.ids.anchor_layout_spinner)
+
+
+    
     def disable_widgets(self):
         self.ids.vehicle_item.opacity = 0
         self.ids.connection_type_layout.opacity = 0
