@@ -14,9 +14,10 @@
     ZequentGridLayout:
         cols:1 
         id: connection_type_layout 
+        padding: 0,0
         ZequentGridLayout:
             cols:2
-            padding: app.paddings["none"]
+            padding: 0,0
             ZequentAnchorLayout:
                 ZequentLabel:
                     text: app.translator.translate("connection_type")
@@ -40,15 +41,14 @@
         ZequentGridLayout:
             cols:2
             opacity: 0 if connection_type_dropdown.current_item is "RFC" else 1 
-            ZequentAnchorLayout:
-                ZequentLabel:
-                    text: app.translator.translate("connection_layout_ip:")
-            ZequentAnchorLayout:
-                ZequentSingleTextInput:
-                    id: lte_address
-                    disabled: False
-                    font_size: "40dp"
-                    text: "127.0.0.1"
+            ZequentLabel:
+                text: app.translator.translate("connection_layout_ip:")
+            ZequentSingleTextInput:
+                id: lte_address
+                disabled: False
+                font_size: "40dp"
+                text: "127.0.0.1"
+                
         ZequentAnchorLayout:
             ZequentLabel:
                 id: connection_status_label
