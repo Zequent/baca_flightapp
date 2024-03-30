@@ -9,6 +9,8 @@ from zequentmavlinklib.Globals import WorkerThread
 import threading
 from tools.Utils import *
 from tools.py_files.widgets.zequentmapview import ZequentMapView
+
+logging.basicConfig(level=logging.DEBUG)
 class MainControllerLayout(ZequentBoxLayout):
     
     
