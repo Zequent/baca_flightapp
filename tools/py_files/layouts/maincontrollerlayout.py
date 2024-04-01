@@ -20,7 +20,7 @@ class MainControllerLayout(ZequentBoxLayout):
         self.app.connected = True
         self.drone: ArduPlaneObject =self.app.drone
         self.start_get_pos_thread()
-        #self.start_get_stats_thread()
+        self.start_get_stats_thread()
         #self.update_drone_states_worker()
 
 
@@ -31,7 +31,7 @@ class MainControllerLayout(ZequentBoxLayout):
         update_pos_thread.start()
 
     def start_get_stats_thread(self):
-        update_drone_stats = WorkerThread(method=self.get_states_from_drone, 
+        update_drone_stats = WorkerThread(method=self.update_drone_states_worker, 
                                           name="Update Drone Stats", args=())
         update_drone_stats.start()
 
@@ -43,7 +43,7 @@ class MainControllerLayout(ZequentBoxLayout):
 
     def update_drone_states_worker(self):
         if self.drone is not None:
-            Utils.every(4, self.start_get_stats_thread)
+            Utils.every(4, self.get_states_from_drone)
             
       
 
@@ -52,7 +52,7 @@ class MainControllerLayout(ZequentBoxLayout):
             self.drone.is_vehicle_armed()
             self.drone.get_battery_status()
             print("" + str(self.drone.is_armed) + "           " + str(self.drone.battery))
-            self.ids.fix_tele_logs.is_armed = str(self.drone.is_armed)
+            self.ids.fix_tele_logs.isArmed = str(self.drone.is_armed)
             self.ids.fix_tele_logs.battery = str(self.drone.battery)
 
 

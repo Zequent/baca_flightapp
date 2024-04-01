@@ -10,7 +10,7 @@ from zequentmavlinklib.ArduPlane import ArduPlaneObject
 class ZequentLogs(ZequentBoxLayout):
     #logs=StringProperty()
     drone=ObjectProperty()
-    is_armed = StringProperty("Default")
+    isArmed = StringProperty("Default")
     battery = StringProperty("Default")
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -18,7 +18,7 @@ class ZequentLogs(ZequentBoxLayout):
         self.orientation='vertical'
         self.app= MDApp.get_running_app()
         self.drone: ArduPlaneObject = self.app.drone
-        self.armWidget = ZequentLabel(text=self.is_armed)
+        self.armWidget = ZequentLabel(text=self.isArmed)
         self.batteryWidget = ZequentLabel(text=self.battery)
         self.add_widget(self.armWidget)
         self.add_widget(self.batteryWidget)
@@ -27,12 +27,17 @@ class ZequentLogs(ZequentBoxLayout):
         pass
 
     @mainthread
-    def on_is_armed(self, instance, *args):
-        self.is_armed = str(self.drone.is_armed)
+    def on_isArmed(self, instance, *args):
+        self.isArmed = str(self.drone.is_armed)
+        print("---------------------------")
+        print(self.isArmed)
+        self.armWidget.text = self.isArmed
         #arm_state = ZequentLabel(text=str(self.drone.is_armed))
 
+    @mainthread
     def on_battery(self,instance,  *args):
         self.battery = str(self.drone.battery)
+        self.batteryWidget.text = self.battery
         #battery_status = ZequentLabel(text=str(self.drone.battery))
 
 
