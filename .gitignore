@@ -2,6 +2,7 @@
 bin/
 __pycache__/
 venv/
+.venv/
 .idea/
 cache/
 eeprom.bin

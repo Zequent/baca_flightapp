@@ -20,21 +20,22 @@ from logging import getLogger
 import weakref
 import weakref
 import concurrent.futures
-
+from kivy.properties import NumericProperty
 
 log = getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
 
-class ZequentConnectionLayout(ZequentGridLayout):
+class ZequentConnectionLayout(GridLayout):
     connectionStatusText = ''
+
+    cols= NumericProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.drone = None
         self.app = MDApp.get_running_app()
         self.spinner = None
-
         if self.app.root is not None:
             self.connectionStatusText = self.app.translator.translate('not_connected')
         

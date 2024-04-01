@@ -93,6 +93,14 @@ class Utils:
             return "./static/icons/drone/vtol_white.png"
         elif droneType.lower() == 'copter':
             return "./static/icons/drone/copter_white.png"
+    
+    @staticmethod
+    def get_globus_image():
+        return "./static/images/layouts/connection/globus.png"
+
+    @staticmethod
+    def get_drone_image():
+        return "./static/images/layouts/connection/drone.png"
         
 
 

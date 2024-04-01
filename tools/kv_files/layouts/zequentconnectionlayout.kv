@@ -1,71 +1,87 @@
 
+#:import Utils tools.Utils.Utils
 
 <ZequentConnectionLayout>:
-    size_hint: .5, 1
-    ZequentAnchorLayout:
-        ZequentConnectionButton:
-            id: connect_dropdown
-            text: "Connect Aircraft"
-            icon: "arrow-right-bold" if self.enabled == True else "arrow-up-bold"
-            on_press:
-                self.checkGrid(root)
-            currObject:
-                connection_type_layout
+    #size_hint: .5, 1
+    cols:2
     ZequentGridLayout:
-        cols:1 
-        id: connection_type_layout 
-        padding: 0,0
-        ZequentGridLayout:
-            cols:2
-            padding: 0,0
-            ZequentAnchorLayout:
-                ZequentLabel:
-                    text: app.translator.translate("connection_type")
-            ZequentAnchorLayout:
-                ZequentDropDownItem:
-                    id: connection_type_dropdown
-                    text: self.getInitialConnectionType()
-                    on_release: self.openLTEConnectionTypeMenu(self)
-                    current_item: self.getInitialConnectionType()
-        ZequentGridLayout:
-            cols:2
-            ZequentAnchorLayout:
-                ZequentLabel:
-                    text: app.translator.translate("connection_layout_drone_type:")
-            ZequentAnchorLayout:
-                ZequentDropDownItem:
-                    id: vehicle_item
-                    text: self.getInitialVehicle()
-                    on_release: self.openVehicleMenu(self)
-                    current_item: self.getInitialVehicle()
-        ZequentGridLayout:
-            cols:2
-            opacity: 0 if connection_type_dropdown.current_item is "RFC" else 1 
-            ZequentLabel:
-                text: app.translator.translate("connection_layout_ip:")
-            ZequentSingleTextInput:
-                id: lte_address
-                disabled: False
-                font_size: "40dp"
-                text: "127.0.0.1"
-        ZequentAnchorLayout:
-            ZequentLabel:
-                id: connection_status_label
-                text: root.connectionStatusText
+        cols:1
         ZequentAnchorLayout:
             ZequentConnectionButton:
-                id: connect_button
-                md_bg_color: app.customColors["success"]
-                text: 'Connect'
-                on_press: 
-                    root.start_connecting_process(self)
-            
-    ZequentAnchorLayout:
-        ZequentConnectionButton:
-            id: languages_button
-            text: "Choose Languages"
-            on_press: app.root.ids.appbar.open_language_dropdown(self)
-    ZequentAnchorLayout:
-        ZequentLabel:
-            text: str(app.translator.translate("current_language:")) + " " + str(app.translator.locale)
-            
+                id: connect_dropdown
+                text: "Connect Aircraft"
+                icon: "arrow-right-bold" if self.enabled == True else "arrow-up-bold"
+                on_press:
+                    self.checkGrid(root)
+                currObject:
+                    connection_type_layout
+        ZequentGridLayout:
+            cols:1 
+            id: connection_type_layout 
+            padding: 0,0
+            ZequentGridLayout:
+                cols:2
+                padding: 0,0
+                ZequentAnchorLayout:
+                    ZequentLabel:
+                        text: app.translator.translate("connection_type")
+                ZequentAnchorLayout:
+                    ZequentDropDownItem:
+                        id: connection_type_dropdown
+                        text: self.getInitialConnectionType()
+                        on_release: self.openLTEConnectionTypeMenu(self)
+                        current_item: self.getInitialConnectionType()
+            ZequentGridLayout:
+                cols:2
+                ZequentAnchorLayout:
+                    ZequentLabel:
+                        text: app.translator.translate("connection_layout_drone_type:")
+                ZequentAnchorLayout:
+                    ZequentDropDownItem:
+                        id: vehicle_item
+                        text: self.getInitialVehicle()
+                        on_release: self.openVehicleMenu(self)
+                        current_item: self.getInitialVehicle()
+            ZequentGridLayout:
+                cols:2
+                opacity: 0 if connection_type_dropdown.current_item is "RFC" else 1 
+                ZequentLabel:
+                    text: app.translator.translate("connection_layout_ip:")
+                ZequentSingleTextInput:
+                    id: lte_address
+                    disabled: False
+                    font_size: "40dp"
+                    text: "127.0.0.1"
+            ZequentAnchorLayout:
+                ZequentLabel:
+                    id: connection_status_label
+                    text: root.connectionStatusText
+            ZequentAnchorLayout:
+                ZequentConnectionButton:
+                    id: connect_button
+                    md_bg_color: app.customColors["success"]
+                    text: 'Connect'
+                    on_press: 
+                        root.start_connecting_process(self)
+                
+        ZequentAnchorLayout:
+            ZequentConnectionButton:
+                id: languages_button
+                text: "Choose Languages"
+                on_press: app.root.ids.appbar.open_language_dropdown(self)
+        ZequentAnchorLayout:
+            ZequentLabel:
+                text: str(app.translator.translate("current_language:")) + " " + str(app.translator.locale)
+    
+        ZequentBoxLayout:
+            orientation: 'vertical'  
+    
+    RelativeLayout:
+        Image:
+            source: Utils.get_globus_image()
+            size: self.texture_size  
+            pos: root.width/6, root.height/3
+        Image:
+            source: Utils.get_drone_image()
+            size: self.texture_size  
+            pos: root.width/9, root.height/8
