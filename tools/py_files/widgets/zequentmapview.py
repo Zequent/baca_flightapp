@@ -2,7 +2,6 @@ import threading
 from kivy_garden.mapview import MapView, MapMarker, MapSource, MapMarkerPopup
 import geocoder
 from zequentmavlinklib.ArduPlane import ArduPlaneObject
-from zequentmavlinklib.Globals import WorkerThread
 from kivy.properties import NumericProperty
 from tools.Utils import Utils
 from kivy.clock import mainthread
@@ -12,7 +11,7 @@ currentGeocoder = geocoder.ip('me')
 from kivymd.app import MDApp
 from logging import getLogger
 import logging
-
+from tools.Utils import *
 import cv2  # importing cv 
 import imutils 
 log = getLogger(__name__)
@@ -49,7 +48,7 @@ class ZequentMapView(MapView):
         self.last.opacity = .2
 
         #Home Pos marker
-        response = self.drone.get_home_position()
+        response = execute_with_thread(method=self.drone.get_home_position, name="Get Home Position")
         home_pos_lat = response.latitude * 0.0000001
         home_pos_lon = response.longitude * 0.0000001
 
@@ -67,7 +66,7 @@ class ZequentMapView(MapView):
         self.center_on(self.latitude, self.longitude)
         # self.updateMap()
 
-    def change_pos_marker(self, templat, templon, hdg):
+    def change_pos_marker(self, templat, templon, hdg, *args):
         threading.Thread(target=self.update_marker, args=[hdg]).start()
         self.last.lat = self.penultimate.lat
         self.last.lon = self.penultimate.lon

@@ -18,7 +18,7 @@ import logging
 from logging import getLogger
 
 log = getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 
 class ZequentAppBar(MDTopAppBar):
@@ -117,14 +117,18 @@ class ZequentAppBar(MDTopAppBar):
         return available_special_commands
 
     def execute_special_command(self, method):
-        self.execute_special_command_worker(method)
+        execute_with_thread("Execute Special Commands", self.execute_special_command_worker, method)
+        self.show_info_box()
+
+
+    def show_info_box(self):
         if hasattr(self.mavResult, 'details'):
-            # log.info(self.mavResult.details)
             ZequentToast.showInfoMessage(self.mavResult.details)
 
-    def execute_special_command_worker(self, method, *args):
-        command = getattr(ArduPlaneObject, method)
-        if args is not None:
-            self.mavResult = command(self.drone, *args)
+
+    def execute_special_command_worker(self, args):
+        command = getattr(ArduPlaneObject, args[0])
+        if len(args) >= 2:
+            self.mavResult = command(self.drone, args[1])
         else:
             self.mavResult = command(self.drone)
