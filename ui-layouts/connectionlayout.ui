@@ -62,7 +62,7 @@
    </widget>
    <widget class="QPushButton" name="connect_button">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -73,7 +73,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Connect</string>
+     <string>Test</string>
     </property>
    </widget>
    <widget class="QDateTimeEdit" name="dateTimeEdit">

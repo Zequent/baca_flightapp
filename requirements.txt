@@ -15,4 +15,4 @@ opencv-python
 imutils
 pyqt5
 #https://github.com/kivymd/KivyMD/archive/master.zip
-../zequent-mavlink-lib/dist/zequentmavlinklib-1.0.4.tar.gz
+../zequent-flight-system/zequent-mavlink-lib/dist/zequentmavlinklib-1.0.4.tar.gz
